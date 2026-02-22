@@ -34,8 +34,6 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 \## Project Structure
 
-Core Files
-
 
 
 * stm32f407xx.h
@@ -88,7 +86,7 @@ Core Files
 
 &#x09;- Read/write/toggle functions
 
-
+Core Files
 
 drivers/
 
@@ -134,11 +132,9 @@ drivers/
 
 
 
-Note:  
+Note:
 
-This repository contains only the relevant source files.  
+This repository contains only the relevant source files.
 
 Build artifacts and IDE-specific files are excluded using .gitignore.
-
-
 

@@ -124,7 +124,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 {
 	uint32_t temp = 0;
-	//1. confugure the mode of the gpio pin
+	//1. configure the mode of the gpio pin
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
 	{
 		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
@@ -291,11 +291,13 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t val
 	{
 		//write 1 to the output data register at the bit field corresponding to the pin number
 		pGPIOx->ODR |= (1 << pinNumber);
+		//pGPIOx->BSRR = (1 << pinNumber); //BSRR is use for atomic bit set/reset and is interrupt safe
 	}
 	else
 	{
 		//write 0
 		pGPIOx->ODR &= ~(1 << pinNumber);
+		//pGPIOx->BSRR = (1 << (pinNumber + 16)); //BSRR is use for atomic bit set/reset and is interrupt safe
 
 	}
 }
