@@ -53,18 +53,18 @@ Discarded input sections
  .ARM.exidx     0x00000000       0x10 C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
  .ARM.attributes
                 0x00000000       0x1c C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .group         0x00000000        0xc ./Src/002LED_button.o
- .text          0x00000000        0x0 ./Src/002LED_button.o
- .data          0x00000000        0x0 ./Src/002LED_button.o
- .bss           0x00000000        0x0 ./Src/002LED_button.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .group         0x00000000        0xc ./Src/003LED_button_ext.o
+ .text          0x00000000        0x0 ./Src/003LED_button_ext.o
+ .data          0x00000000        0x0 ./Src/003LED_button_ext.o
+ .bss           0x00000000        0x0 ./Src/003LED_button_ext.o
  .group         0x00000000        0xc ./Src/syscalls.o
  .group         0x00000000        0xc ./Src/syscalls.o
  .group         0x00000000        0xc ./Src/syscalls.o
@@ -542,7 +542,7 @@ Linker script and memory map
 LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m/nofp/crti.o
 LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m/nofp/crtbegin.o
 LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
-LOAD ./Src/002LED_button.o
+LOAD ./Src/003LED_button_ext.o
 LOAD ./Src/syscalls.o
 LOAD ./Src/sysmem.o
 LOAD ./Startup/startup_stm32f407vgtx.o
@@ -583,9 +583,9 @@ LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  *(.text)
  .text          0x08000188       0x40 C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m/nofp/crtbegin.o
  *(.text*)
- .text.delay    0x080001c8       0x2c ./Src/002LED_button.o
+ .text.delay    0x080001c8       0x2c ./Src/003LED_button_ext.o
                 0x080001c8                delay
- .text.main     0x080001f4       0x84 ./Src/002LED_button.o
+ .text.main     0x080001f4       0x84 ./Src/003LED_button_ext.o
                 0x080001f4                main
  .text.Reset_Handler
                 0x08000278       0x50 ./Startup/startup_stm32f407vgtx.o
@@ -831,7 +831,7 @@ LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
  .ARM.attributes
                 0x0000001e       0x2e C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m/nofp/crtbegin.o
  .ARM.attributes
-                0x0000004c       0x2e ./Src/002LED_button.o
+                0x0000004c       0x2e ./Src/003LED_button_ext.o
  .ARM.attributes
                 0x0000007a       0x21 ./Startup/startup_stm32f407vgtx.o
  .ARM.attributes
@@ -847,18 +847,18 @@ LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
 LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m/nofp\libgcc.a
 
 .debug_info     0x00000000      0x890
- .debug_info    0x00000000      0x28f ./Src/002LED_button.o
+ .debug_info    0x00000000      0x28f ./Src/003LED_button_ext.o
  .debug_info    0x0000028f       0x30 ./Startup/startup_stm32f407vgtx.o
  .debug_info    0x000002bf      0x5d1 ./drivers/Src/stm32f407xx_gpio_driver.o
 
 .debug_abbrev   0x00000000      0x2be
- .debug_abbrev  0x00000000      0x12a ./Src/002LED_button.o
+ .debug_abbrev  0x00000000      0x12a ./Src/003LED_button_ext.o
  .debug_abbrev  0x0000012a       0x24 ./Startup/startup_stm32f407vgtx.o
  .debug_abbrev  0x0000014e      0x170 ./drivers/Src/stm32f407xx_gpio_driver.o
 
 .debug_aranges  0x00000000       0xb8
  .debug_aranges
-                0x00000000       0x28 ./Src/002LED_button.o
+                0x00000000       0x28 ./Src/003LED_button_ext.o
  .debug_aranges
                 0x00000028       0x28 ./Startup/startup_stm32f407vgtx.o
  .debug_aranges
@@ -867,46 +867,46 @@ LOAD C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.exte
 .debug_rnglists
                 0x00000000       0x7f
  .debug_rnglists
-                0x00000000       0x1a ./Src/002LED_button.o
+                0x00000000       0x1a ./Src/003LED_button_ext.o
  .debug_rnglists
                 0x0000001a       0x19 ./Startup/startup_stm32f407vgtx.o
  .debug_rnglists
                 0x00000033       0x4c ./drivers/Src/stm32f407xx_gpio_driver.o
 
-.debug_macro    0x00000000     0x13ad
- .debug_macro   0x00000000       0x91 ./Src/002LED_button.o
- .debug_macro   0x00000091      0xad8 ./Src/002LED_button.o
- .debug_macro   0x00000b69       0x22 ./Src/002LED_button.o
- .debug_macro   0x00000b8b       0x8e ./Src/002LED_button.o
- .debug_macro   0x00000c19       0x51 ./Src/002LED_button.o
- .debug_macro   0x00000c6a      0x103 ./Src/002LED_button.o
- .debug_macro   0x00000d6d       0x6a ./Src/002LED_button.o
- .debug_macro   0x00000dd7      0x1df ./Src/002LED_button.o
- .debug_macro   0x00000fb6      0x2b2 ./Src/002LED_button.o
- .debug_macro   0x00001268       0xc4 ./Src/002LED_button.o
- .debug_macro   0x0000132c       0x81 ./drivers/Src/stm32f407xx_gpio_driver.o
+.debug_macro    0x00000000     0x13b3
+ .debug_macro   0x00000000       0x97 ./Src/003LED_button_ext.o
+ .debug_macro   0x00000097      0xad8 ./Src/003LED_button_ext.o
+ .debug_macro   0x00000b6f       0x22 ./Src/003LED_button_ext.o
+ .debug_macro   0x00000b91       0x8e ./Src/003LED_button_ext.o
+ .debug_macro   0x00000c1f       0x51 ./Src/003LED_button_ext.o
+ .debug_macro   0x00000c70      0x103 ./Src/003LED_button_ext.o
+ .debug_macro   0x00000d73       0x6a ./Src/003LED_button_ext.o
+ .debug_macro   0x00000ddd      0x1df ./Src/003LED_button_ext.o
+ .debug_macro   0x00000fbc      0x2b2 ./Src/003LED_button_ext.o
+ .debug_macro   0x0000126e       0xc4 ./Src/003LED_button_ext.o
+ .debug_macro   0x00001332       0x81 ./drivers/Src/stm32f407xx_gpio_driver.o
 
-.debug_line     0x00000000      0xe24
- .debug_line    0x00000000      0x547 ./Src/002LED_button.o
- .debug_line    0x00000547       0x7b ./Startup/startup_stm32f407vgtx.o
- .debug_line    0x000005c2      0x862 ./drivers/Src/stm32f407xx_gpio_driver.o
+.debug_line     0x00000000      0xe28
+ .debug_line    0x00000000      0x54b ./Src/003LED_button_ext.o
+ .debug_line    0x0000054b       0x7b ./Startup/startup_stm32f407vgtx.o
+ .debug_line    0x000005c6      0x862 ./drivers/Src/stm32f407xx_gpio_driver.o
 
-.debug_str      0x00000000     0x5460
- .debug_str     0x00000000     0x5460 ./Src/002LED_button.o
-                               0x53a7 (size before relaxing)
- .debug_str     0x00005460        0x0 ./Startup/startup_stm32f407vgtx.o
+.debug_str      0x00000000     0x5463
+ .debug_str     0x00000000     0x5463 ./Src/003LED_button_ext.o
+                               0x53b0 (size before relaxing)
+ .debug_str     0x00005463        0x0 ./Startup/startup_stm32f407vgtx.o
                                  0xe5 (size before relaxing)
- .debug_str     0x00005460        0x0 ./drivers/Src/stm32f407xx_gpio_driver.o
+ .debug_str     0x00005463        0x0 ./drivers/Src/stm32f407xx_gpio_driver.o
                                0x5551 (size before relaxing)
 
 .comment        0x00000000       0x43
- .comment       0x00000000       0x43 ./Src/002LED_button.o
+ .comment       0x00000000       0x43 ./Src/003LED_button_ext.o
                                  0x44 (size before relaxing)
  .comment       0x00000043        0x0 ./drivers/Src/stm32f407xx_gpio_driver.o
                                  0x44 (size before relaxing)
 
 .debug_frame    0x00000000      0x224
- .debug_frame   0x00000000       0x58 ./Src/002LED_button.o
+ .debug_frame   0x00000000       0x58 ./Src/003LED_button_ext.o
  .debug_frame   0x00000058      0x1a0 ./drivers/Src/stm32f407xx_gpio_driver.o
  .debug_frame   0x000001f8       0x2c C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp\libc_nano.a(libc_a-init.o)
 
