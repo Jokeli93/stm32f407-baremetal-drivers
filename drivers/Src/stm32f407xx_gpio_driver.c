@@ -16,7 +16,6 @@
 *
 *  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- ENABLE or DISABLE macros
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -113,8 +112,6 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 * @brief		- This function initializes/sets the GPIO port
 *
 *  @param[in]	- Structure to handle a GPIO pin
-*  @param[in]	-
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -159,6 +156,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 		}
 
 		//2. configure the GPIO port selection in SYSCFG_EXTICR
+		SYSCFG_PCLK_EN();
 		uint8_t temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 4;
 		uint8_t temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 4;
 		uint8_t portCode = GPIO_PORTCODE(pGPIOHandle->pGPIOx);
@@ -210,8 +208,6 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 * @brief		- This function resets the GPIO port
 *
 *  @param[in]	- base address of the gpio peripheral
-*  @param[in]	-
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -267,7 +263,6 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 *
 *  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- pin number
-*  @param[in]	-
 *
 * @return		- 0 or 1
 *
@@ -288,8 +283,6 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
 * @brief		-
 *
 *  @param[in]	- base address of the gpio peripheral
-*  @param[in]	-
-*  @param[in]	-
 *
 * @return		- 16 bits value of the gpio port
 *
@@ -342,7 +335,6 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t val
 *
 *  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- port value
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -362,7 +354,6 @@ void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value)
 *
 *  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- pin  number
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -377,12 +368,11 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
 //IRQ configuration and ISR handling
 
 /*******************************************************************************
-* @fn			- GPIO_IRQConfig
+* @fn			- GPIO_IRQInterruptConfig
 *
-* @brief		-
+* @brief		-This function enables/disable the interrupt of  a given IRQ number
 *
 *  @param[in]	- IRQ number
-*  @param[in]	- IQR priority
 *  @param[in]	- ENABLE or DISABLE macro
 *
 * @return		- none
@@ -390,7 +380,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
 * @note			- none
 *
 ********************************************************************************/
-void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) // used to configure the IRQ number of the GPIO pin  (enable, setting up the priority, ...)
+void GPIO_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi) // used to configure the IRQ number of the GPIO pin  (enable, setting up the priority, ...)
 {
 
 	if (EnorDi == ENABLE)
@@ -438,13 +428,33 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) // u
 }
 
 /*******************************************************************************
+* @fn			- GPIO_IRQPriorityConfig
+*
+* @brief		-This function configures the priority of a given interrupt
+*
+*  @param[in]	- IQR number
+*  @param[in]	- IQR priority
+*
+* @return		- none
+*
+* @note			- none
+*
+********************************************************************************/
+void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
+{
+	uint8_t iprx = IRQNumber / 4;
+	uint8_t iprx_section = IRQNumber % 4;
+
+	uint8_t shift_amount = (8 * iprx_section) + (8- NO_PR_BITS_IMPLEMENTED);
+	*(NVIC_PR_BASE_ADDR + (iprx * 4)) |= (IRQPriority << shift_amount);
+}
+
+/*******************************************************************************
 * @fn			- GPIO_IRQHandling(uint8_t pinNumber)
 *
 * @brief		-
 *
 *  @param[in]	- pin number
-*  @param[in]	-
-*  @param[in]	-
 *
 * @return		- none
 *
@@ -453,5 +463,9 @@ void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) // u
 ********************************************************************************/
 void GPIO_IRQHandling(uint8_t pinNumber) // Function to process interrupts
 {
-
+	//clear the exti pending register (PR) corresponding  to the pin number
+	if(EXTI->PR & (1 << pinNumber))
+	{
+		EXTI->PR |= (1 << pinNumber);  //clearing the PR
+	}
 }
