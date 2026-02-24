@@ -133,6 +133,39 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	}else
 	{
 		//for interrupt mode
+		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT)
+		{
+			//1. configure the FTSR
+
+			EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			//clear the corresponding RTSR bit
+			EXTI->RTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+		}
+		else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
+		{
+			//1. configure the RTSR
+
+			EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+			//clear the corresponding FTSR bit
+			EXTI->FTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+		}
+		else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT)
+		{
+			//1. configure the FTSR and RTSR
+			EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
+			EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
+		}
+
+		//2. configure the GPIO port selection in SYSCFG_EXTICR
+		uint8_t temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 4;
+		uint8_t temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 4;
+		uint8_t portCode = GPIO_PORTCODE(pGPIOHandle->pGPIOx);
+		SYSCFG->EXTICR[temp1] = (portCode << temp2 * 4);
+
+		//3. enable the exti interrupt delivery  using IMR
+		EXTI->IMR |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 	}
 
 	temp = 0;
@@ -360,6 +393,48 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
 void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi) // used to configure the IRQ number of the GPIO pin  (enable, setting up the priority, ...)
 {
 
+	if (EnorDi == ENABLE)
+	{
+		if (IRQPriority <= 31)
+		{
+			//Programm ISER0
+			*NVIC_ISER0 |= (1 << IRQNumber);
+
+		}
+		else if(EnorDi > 31 && EnorDi <= 63)
+		{
+			//Programm ISER1
+			*NVIC_ISER1 |= (1 << IRQNumber % 32);
+
+		}
+		else if(EnorDi > 63 && EnorDi <= 95)
+		{
+			//Programm ISER2
+			*NVIC_ISER2 |= (1 << IRQNumber % 64);
+
+		}
+	}
+	else
+	{
+		if (IRQPriority <= 31)
+		{
+			//Programm ICER0
+			*NVIC_ICER0 |= (1 << IRQNumber);
+
+		}
+		else if(EnorDi > 31 && EnorDi <= 63)
+		{
+			//Programm ICER1
+			*NVIC_ICER1 |= (1 << IRQNumber % 32);
+
+		}
+		else if(EnorDi > 63 && EnorDi <= 95)
+		{
+			//Programm ICER2
+			*NVIC_ICER2 |= (1 << IRQNumber % 64);
+
+		}
+	}
 }
 
 /*******************************************************************************
