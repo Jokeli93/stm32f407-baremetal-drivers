@@ -66,7 +66,7 @@ int main (void)
 
 void EXTI9_5_IRQHandler(void)
 {
-	//delay();
+	delay();
 	GPIO_IRQHandling(GPIO_PIN_NO_5); //clear the pending event from exti line
 	GPIO_ToggleOutputPin(GpioLed.pGPIOx, GpioLed.GPIO_PinConfig.GPIO_PinNumber);
 }
