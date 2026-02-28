@@ -85,10 +85,15 @@
 //Base addresses of peripherals hanging on APB2 bus
 
 #define SPI1_BASEADDR		(APB2PERIPH_BASEADDR + 0x3000)
+#define SPI4_BASEADDR		(APB2PERIPH_BASEADDR + 0x3400)
+#define SPI5_BASEADDR		(APB2PERIPH_BASEADDR + 0x5000)
+#define SPI6_BASEADDR		(APB2PERIPH_BASEADDR + 0x5400)
+
 #define USART1_BASEADDR		(APB2PERIPH_BASEADDR + 0x1000)
 #define USART6_BASEADDR		(APB2PERIPH_BASEADDR + 0x1400)
 #define EXTI_BASEADDR		(APB2PERIPH_BASEADDR + 0x3C00)
 #define SYSCFG_BASEADDR		(APB2PERIPH_BASEADDR + 0x3800)
+
 
 //Definition structure for GPIO peripheral
 
@@ -154,6 +159,7 @@ typedef struct
 	__vo uint32_t PR;		//Address offset 0x14
 }EXTI_RegDef_t;
 
+//Definition structure of the SYSCFG peripheral
 typedef struct
 {
 	__vo uint32_t MEMRMP;		//Address offset 0x00
@@ -161,6 +167,23 @@ typedef struct
 	__vo uint32_t EXTICR[4];	//Address offset 0x08 - 0x14
 	__vo uint32_t CMPCR;		//Address offset 0x20
 }SYSCFG_RegDef_t;
+
+//Definition structure of the SPI peripheral
+
+typedef struct
+{
+	__vo uint32_t CR1;
+	__vo uint32_t CR2;
+	__vo uint32_t SR;
+	__vo uint32_t DR;
+	__vo uint32_t CRCPR;
+	__vo uint32_t RXCRCR;
+	__vo uint32_t TXCRCR;
+	__vo uint32_t I2SCFGR;
+	__vo uint32_t I2SPR;
+
+}SPI_RegDef_t;
+
 
 //Peripheral definition of the GPIOs ports
 
@@ -173,6 +196,15 @@ typedef struct
 #define GPIOG ((GPIO_RegDef_t*)GPIOG_BASEADDR)
 #define GPIOH ((GPIO_RegDef_t*)GPIOH_BASEADDR)
 #define GPIOI ((GPIO_RegDef_t*)GPIOI_BASEADDR)
+
+//Peripheral definition of the SPI
+
+#define SPI1 ((SPI_RegDef_t*)SPI1_BASEADDR)
+#define SPI2 ((SPI_RegDef_t*)SPI2_BASEADDR)
+#define SPI3 ((SPI_RegDef_t*)SPI3_BASEADDR)
+#define SPI4 ((SPI_RegDef_t*)SPI4_BASEADDR)
+#define SPI5 ((SPI_RegDef_t*)SPI5_BASEADDR)
+#define SPI6 ((SPI_RegDef_t*)SPI6_BASEADDR)
 
 //Peripheral definition of the RCC
 
@@ -209,6 +241,9 @@ typedef struct
 #define SPI1_PCLK_EN()		(RCC->APB2ENR |= (1 << 12))
 #define SPI2_PCLK_EN()		(RCC->APB1ENR |= (1 << 14))
 #define SPI3_PCLK_EN()		(RCC->APB1ENR |= (1 << 15))
+#define SPI4_PCLK_EN()		(RCC->APB2ENR |= (1 << 13))
+#define SPI5_PCLK_EN()		(RCC->APB2ENR |= (1 << 20))
+#define SPI6_PCLK_EN()		(RCC->APB2ENR |= (1 << 21))
 
 //Clock Enable for U(S)ARTx peripherals
 
@@ -245,6 +280,9 @@ typedef struct
 #define SPI1_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 12))
 #define SPI2_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 14))
 #define SPI3_PCLK_DI()		(RCC->APB1ENR &= ~(1 << 15))
+#define SPI4_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 13))
+#define SPI5_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 20))
+#define SPI6_PCLK_DI()		(RCC->APB2ENR &= ~(1 << 21))
 
 //Clock Disable for U(S)ARTx peripherals
 
@@ -269,6 +307,14 @@ typedef struct
 #define GPIOG_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 6));  (RCC->AHB1RSTR &= ~(1 << 6)); } while(0)
 #define GPIOH_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 7));  (RCC->AHB1RSTR &= ~(1 << 7)); } while(0)
 #define GPIOI_REG_RESET()		do{ (RCC->AHB1RSTR |= (1 << 8));  (RCC->AHB1RSTR &= ~(1 << 8)); } while(0)
+
+//Macros to reset SPI peripherals
+#define SPI1_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 12));  (RCC->APB2RSTR &= ~(1 << 12)); } while(0)
+#define SPI2_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 14));  (RCC->APB1RSTR &= ~(1 << 14)); } while(0)
+#define SPI3_REG_RESET()		do{ (RCC->APB1RSTR |= (1 << 15));  (RCC->APB1RSTR &= ~(1 << 15)); } while(0)
+#define SPI4_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 13));  (RCC->APB2RSTR &= ~(1 << 13)); } while(0)
+#define SPI5_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 20));  (RCC->APB2RSTR &= ~(1 << 20)); } while(0)
+#define SPI6_REG_RESET()		do{ (RCC->APB2RSTR |= (1 << 21));  (RCC->APB2RSTR &= ~(1 << 21)); } while(0)
 
 //Macro to define the external interrupt configuration register (EXTICR)
 #define GPIO_PORTCODE(x) ( ((x) == GPIOA) ? 0 : \
@@ -320,5 +366,6 @@ typedef struct
 
 
 #include "stm32f407xx_gpio_driver.h"
+#include "stm32f407xx_spi_driver.h"
 
 #endif /* INC_STM32F407XX_H_ */

@@ -450,7 +450,7 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 }
 
 /*******************************************************************************
-* @fn			- GPIO_IRQHandling(uint8_t pinNumber)
+* @fn			- GPIO_IRQHandling
 *
 * @brief		-
 *
