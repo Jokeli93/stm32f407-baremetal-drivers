@@ -363,6 +363,8 @@ typedef struct
 #define RESET				DISABLE
 #define GPIO_PIN_SET		SET
 #define GPIO_PIN_RESET		RESET
+#define FLAG_RESET			RESET
+#define FLAG_SET			SET
 
 
 /************************************************************************
@@ -378,7 +380,7 @@ typedef struct
 #define SPI_CR1_SPE			6
 #define SPI_CR1_LSBFIRST	7
 #define SPI_CR1_SSI			8
-#define SPI_CR1_SSI			9
+#define SPI_CR1_SSM			9
 #define SPI_CR1_RXONLY		10
 #define SPI_CR1_DFF			11
 #define SPI_CR1_CRCNEXT		12

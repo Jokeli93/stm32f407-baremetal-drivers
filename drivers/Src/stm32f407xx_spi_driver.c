@@ -180,6 +180,77 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 		}
 }
 
+
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t flagName)
+{
+	if(pSPIx->SR & flagName)
+	{
+		return FLAG_SET;
+	}
+
+	return FLAG_RESET;
+}
+
+/*******************************************************************************
+* @fn			- SPI_SendData
+*
+* @brief		- This function is used to send the data
+*
+*  @param[in]	-
+*  @param[in]	- transmission register
+*  @param[in]	- lenght of the data
+*
+* @return		- none
+*
+* @note			- This is a blocking call (polling based code)
+*
+********************************************************************************/
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
+{
+	while(len> 0)
+	{
+		//1. wait until TXE is set
+		while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET); //Here we are polling for the TXE flag to SET
+
+		//2. check the DFF bit in CR1
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			//16 bit DFF
+			//1. load the data in to the DR
+			pSPIx->DR = *((uint16_t*)pTxBuffer);
+			len--;
+			len--;
+			(uint16_t*)pTxBuffer++;
+		}
+		else
+		{
+			//8 bit DFF
+			pSPIx->DR = *pTxBuffer;
+			len--;
+			pTxBuffer++;
+		}
+	}
+}
+
+/*******************************************************************************
+* @fn			- SPI_ReceiveData
+*
+* @brief		- This function is used to receive the data
+*
+*  @param[in]	-
+*  @param[in]	- receive register
+*  @param[in]	- lenght of the data
+*
+* @return		- none
+*
+* @note			- none
+*
+********************************************************************************/
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
+{
+
+}
+
 //IRQ configuration and ISR handling
 
 /*******************************************************************************
@@ -197,6 +268,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 ********************************************************************************/
 void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
+
 
 }
 
