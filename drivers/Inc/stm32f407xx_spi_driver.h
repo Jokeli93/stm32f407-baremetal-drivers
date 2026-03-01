@@ -34,6 +34,50 @@ typedef struct
 }SPI_Handle_t;
 
 
+//@SPI_DeviceMode
+
+#define SPI_DEVICE_MODE_SLAVE		0 //device configuration as slave
+#define SPI_DEVICE_MODE_MASTER		1 // device configuration as  master
+
+//@SPI_BusConfig
+
+#define SPI_BUS_CONFIG_FD				1 //Bus configuration as full duplex
+#define SPI_BUS_CONFIG_HD				2 //Bus configuration as half duplex
+#define SPI_BUS_CONFIG_SIMPLEX_RXONLY	3 //Bus configuration as simplex receiver only
+
+//@SPI_SclkSpeed
+#define SPI_SCLK_SPEED_DIV2				0
+#define SPI_SCLK_SPEED_DIV4				1
+#define SPI_SCLK_SPEED_DIV8				2
+#define SPI_SCLK_SPEED_DIV16			3
+#define SPI_SCLK_SPEED_DIV32			4
+#define SPI_SCLK_SPEED_DIV64			5
+#define SPI_SCLK_SPEED_DIV128			6
+#define SPI_SCLK_SPEED_DIV256			7
+
+//@SPI_DFF
+
+#define SPI_DFF_8BITS		0 //8 bits data frame
+#define SPI_DFF_16BITS		1 //16 bits data frame
+
+//@SPI_CPOL
+
+#define SPI_CPOL_HIGH		1 //CLK to 1 when idle
+#define SPI_CPOL_LOW		0 //CLK to 0 when idle
+
+//@SPI_CPHA
+
+#define SPI_CPHA_HIGH		1 //Second clock transition is the first data capture edge
+#define SPI_CPHA_LOW		0 //First clock transition is the first data capture edge
+
+//@SPI_SSM
+
+#define SPI_SSM_EN		1 //Software slave management enabled
+#define SPI_SSM_DI		0 //Software slave management disabled
+
+
+
+
 /**********************************************************************************
  *							APIs supported by this driver
  *		For more information about the APIs check the function definitions
