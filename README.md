@@ -1,14 +1,14 @@
-\# STM32F407 Bare-Metal Driver Development
+**# STM32F407 Bare-Metal Driver Development**
 
 
 
-\## Overview
+\## **Overview**
 
 This project contains a fully custom register-level driver stack for the STM32F407xx microcontroller using bare metal programming in C.
 
 
 
-\## Learning Objectives
+**## Learning Objectives**
 
 * Develop production-style driver architecture
 * Understand hardware-software interaction at register level
@@ -17,14 +17,15 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 
 
-\## Implemented Drivers
+**## Implemented Drivers**
 
-* GPIO (polling mode)
+* GPIO (polling and interrupt based mode)
 * Peripheral clock control
+* SPI (polling  and interrupt based)
 
 
 
-\## Architecture
+**## Architecture**
 
 * MCU register abstraction layer
 * Peripheral driver interface layer
@@ -32,11 +33,11 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 
 
-\## Project Structure
+**## Project Structure**
 
 
 
-* stm32f407xx.h
+* **stm32f407xx.h**
 
 
 
@@ -60,7 +61,7 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 
 
-* stm32f407xx\_gpio\_driver.h
+* **stm32f407xx\_gpio\_driver.h**
 
 
 
@@ -72,7 +73,19 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 
 
-* stm32f407xx\_gpio\_driver.c
+* **stm32f407xx\_spi\_driver.h**
+
+
+
+&#x09;- SPI configuration structures
+
+
+
+&#x09;- API prototypes
+
+
+
+* **stm32f407xx\_gpio\_driver.c**
 
 
 
@@ -86,7 +99,13 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 &#x09;- Read/write/toggle functions
 
-Core Files
+
+
+* **stm32f407xx\_spi\_driver.h**
+
+
+
+**Core Files**
 
 drivers/
 
@@ -102,7 +121,7 @@ drivers/
 
 
 
-\## Design Decisions
+**## Design Decisions**
 
 * No HAL usage
 * Direct register manipulation
@@ -111,7 +130,7 @@ drivers/
 
 
 
-\## Toolchain
+**## Toolchain**
 
 
 
@@ -119,20 +138,20 @@ drivers/
 * STM32CubeIDE
 * GCC ARM Embedded Toolchain
 * Debugging via ST-Link
+* Logic Analyzer
 
 
 
-\## Planned Features
+**## Planned Features**
 
 * EXTI interrupt support
 * USART driver (polling + interrupt)
-* SPI driver
 * I2C driver
 * NVIC abstraction layer
 
 
 
-Note:
+**Note:**
 
 This repository contains only the relevant source files.
 

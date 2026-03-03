@@ -69,6 +69,9 @@ int main(void)
 	//This function is used to initialize the SPI2 peripheral  parameters
 	SPI2_Inits();
 
+	//this makes NSS signal internally high and  avoid MODF error
+	SPI_SSIConfig(SPI2, ENABLE);
+
 	//enables the  SPI2 peripheral
 	SPI_PeripheralControl(SPI2, ENABLE);
 
