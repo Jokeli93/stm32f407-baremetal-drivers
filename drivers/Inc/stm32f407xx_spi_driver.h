@@ -73,7 +73,7 @@ typedef struct
 //@SPI_SSM
 
 #define SPI_SSM_EN		1 //Software slave management enabled
-#define SPI_SSM_DI		0 //Software slave management disabled
+#define SPI_SSM_DI		0 //Software slave management disabled (disable by default)
 
 //SPI related status flags definitions
 
@@ -104,5 +104,7 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi); // used to confi
 void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority); // Function to configure the IRQ priority
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle); // Function to process interrupts
 
+// enables or disables the SPI peripheral
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

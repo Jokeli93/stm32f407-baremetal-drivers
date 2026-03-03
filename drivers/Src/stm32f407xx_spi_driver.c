@@ -101,6 +101,10 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 
 	uint32_t tempReg = 0;
 
+	//enable the peripheral clock
+
+	SPI_PeriClockControl(pSPIHandle->pSPIx, ENABLE);
+
 	//1. Configure the device mode
 	tempReg = pSPIHandle->SPIConfig.SPI_DeviceMode << SPI_CR1_MSTR;
 
@@ -137,7 +141,11 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 	//6. Configure the CPHA
 	tempReg |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA;
 
+	//7.configure the SSM
+	tempReg |= pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM;
+
 	pSPIHandle->pSPIx->CR1 = tempReg;
+
 }
 
 /*******************************************************************************
@@ -196,7 +204,7 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t flagName)
 *
 * @brief		- This function is used to send the data
 *
-*  @param[in]	-
+*  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- transmission register
 *  @param[in]	- lenght of the data
 *
@@ -237,7 +245,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
 *
 * @brief		- This function is used to receive the data
 *
-*  @param[in]	-
+*  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- receive register
 *  @param[in]	- lenght of the data
 *
@@ -307,3 +315,23 @@ void SPI_IRQHandling(SPI_Handle_t *pSPIHandle)
 
 }
 
+/*******************************************************************************
+* @fn		SPI_PeripheralControl
+*
+* @brief		- This function enables or disables the SPI peripheral
+*
+*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- ENABLE or DISABLE macros
+*
+* @return		- none
+*
+* @note			- none
+*
+********************************************************************************/
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
+{
+	if(EnorDi == ENABLE)
+		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+	else
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+}

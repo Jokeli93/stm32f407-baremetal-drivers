@@ -1,1 +1,9 @@
-Src/006spi_tx_testing.o: ../Src/006spi_tx_testing.c
+Src/006spi_tx_testing.o: ../Src/006spi_tx_testing.c \
+ C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx.h \
+ C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx_gpio_driver.h \
+ C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx.h \
+ C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx_spi_driver.h
+C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx.h:
+C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx_gpio_driver.h:
+C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx.h:
+C:/Users/Joelikane/Desktop/Embedded_C_programming_coursera/Mastering_Microcontroller_Embedded_Driver_Development/MCU1_Course_Workspace/target/stm32f4xx_drivers/drivers/Inc/stm32f407xx_spi_driver.h:
