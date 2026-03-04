@@ -101,7 +101,7 @@ This project contains a fully custom register-level driver stack for the STM32F4
 
 
 
-* **stm32f407xx\_spi\_driver.h**
+* **stm32f407xx\_spi\_driver.c**
 
 
 
