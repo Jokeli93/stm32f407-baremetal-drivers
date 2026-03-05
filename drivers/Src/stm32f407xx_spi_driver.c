@@ -356,3 +356,25 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 	else
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
 }
+
+
+/*******************************************************************************
+* @fn		SPI_SSOEConfig
+*
+* @brief		- This function configures the SSOE bit to avoid the Mode fault error (MODF)
+*
+*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- ENABLE or DISABLE macros
+*
+* @return		- none
+*
+* @note			- none
+*
+********************************************************************************/
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
+{
+	if(EnorDi == ENABLE)
+		pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
+	else
+		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
+}

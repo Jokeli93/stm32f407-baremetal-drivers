@@ -79,7 +79,7 @@ typedef struct
 
 #define SPI_TXE_FLAG	(1 << SPI_SR_TXE)
 #define SPI_RXNE_FLAG	(1 << SPI_SR_RXNE)
-#define SPI_BUSY_FLAG	(1 << SPI_SR_BUSY)
+#define SPI_BUSY_FLAG	(1 << SPI_SR_BSY)
 
 
 
@@ -109,5 +109,11 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 
 //configure the SSI bit to avoid the Mode fault error (MODF)
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+
+//configure the SSOE bit
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+
+//return the flag status of the Status Register
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t flagName);
 
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

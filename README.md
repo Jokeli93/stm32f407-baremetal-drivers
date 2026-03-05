@@ -1,132 +1,267 @@
-**# STM32F407 Bare-Metal Driver Development**
+**# STM32F407 Bare-Metal Driver Development (STM32F407)**
 
 
 
 \## **Overview**
 
-This project contains a fully custom register-level driver stack for the STM32F407xx microcontroller using bare metal programming in C.
+
+
+This project demonstrates the development of a register-level embedded driver stack for the STM32F407 microcontroller, implemented from scratch using bare-metal programming in C.
 
 
 
-**## Learning Objectives**
+The goal of the project is to build a modular hardware abstraction layer (HAL-like driver architecture) without relying on vendor libraries such as HAL or LL.
 
-* Develop production-style driver architecture
-* Understand hardware-software interaction at register level
-* Practice modular, reusable embedded code design
-* Prepare for advanced topics (RTOS, middleware, communication stacks)
+
+
+All peripherals are controlled directly through memory-mapped registers based on the STM32F4 reference manual.
+
+
+
+The project focuses on understanding:
+
+* Microcontroller architecture
+* Peripheral register programming
+* Driver abstraction design
+* Interrupt handling
+* Embedded communication protocols
+
+
+
+\---
 
 
 
 **## Implemented Drivers**
 
-* GPIO (polling and interrupt based mode)
-* Peripheral clock control
-* SPI (polling  and interrupt based)
+
+
+\### GPIO
+
+Implemented a full GPIO driver API with configurable parameters.
 
 
 
-**## Architecture**
+Features:
 
-* MCU register abstraction layer
-* Peripheral driver interface layer
-* Peripheral implementation layer
-
-
-
-**## Project Structure**
-
-
-
-* **stm32f407xx.h**
+* Pin mode configuration (Input / Output / Alternate / Analog)
+* Output type configuration (Push-Pull / Open-Drain)
+* Speed configuration
+* Pull-up / Pull-down configuration
+* Pin read / write operations
+* Port read / write operations
+* Pin toggle functionality
+* External interrupt configuration (EXTI)
 
 
 
-&#x09;- Memory base addresses (Flash, SRAM, ROM)
+Example use case implemented:
 
 
 
-&#x09;- Bus base addresses (AHB1, APB1, AHB2, APB2)
+\#### External button interrupt controlling an LED
+
+* Button press generates falling edge interrupt
+* Interrupt handler toggles LED
 
 
 
-&#x09;- Peripheral base addresses (GPIO, RCC, USART, SPI, I2C, etc.)
+This demonstrates:
 
 
 
-&#x09;- Register definition structures
+* EXTI configuration
+* NVIC interrupt handling
+* Event-driven embedded software
 
 
 
-&#x09;- Clock enable/disable macros
+\---
 
 
 
-* **stm32f407xx\_gpio\_driver.h**
+\### SPI Driver
+
+Implemented a bare-metal SPI driver supporting master mode communication.
 
 
 
-&#x09;- GPIO configuration structures
+Features:
 
 
 
-&#x09;- API prototypes
+* SPI peripheral initialization
+* Clock configuration
+* Data transmission
+* Full register-level control
 
 
 
-* **stm32f407xx\_spi\_driver.h**
+\#### Test Setup
+
+Communication between:
 
 
 
-&#x09;- SPI configuration structures
+STM32F407 (Master)
+
+Arduino Uno (Slave)
 
 
 
-&#x09;- API prototypes
+The STM32 sends data through SPI which is received and processed by the Arduino.
 
 
 
-* **stm32f407xx\_gpio\_driver.c**
+This validates:
+
+* &#x20;SPI clock synchronization
+* MOSI data transfer
+* correct register configuration
 
 
 
-&#x09;- Implementation of GPIO initialization
+\---
 
 
 
-&#x09;- Clock control
+**## Driver Architecture**
 
 
 
-&#x09;- Read/write/toggle functions
+The driver architecture follows a layered modular design.
 
 
 
-* **stm32f407xx\_spi\_driver.c**
-
-
-
-**Core Files**
-
-drivers/
+Drivers/
 
 &#x20;├── Inc/
 
 &#x20;│    ├── stm32f407xx.h
 
-&#x20;│    └── stm32f407xx\_gpio\_driver.h
+&#x20;│    ├── stm32f407xx\_gpio\_driver.h
+
+&#x20;│    ├── stm32f407xx\_spi\_driver.h
+
+&#x20;│
 
 &#x20;└── Src/
 
-&#x20;     └── stm32f407xx\_gpio\_driver.c
+&#x20;     ├── stm32f407xx\_gpio\_driver.c
+
+&#x20;     ├── stm32f407xx\_spi\_driver.c
 
 
 
-**## Design Decisions**
+\### Core MCU Header
 
-* No HAL usage
-* Direct register manipulation
-* Bit-masking configuration
-* Handle-based driver abstraction
+stm32f407xx.h
+
+
+
+Countains:
+
+* Memory base addresses
+* Bus peripheral addresses
+* Peripheral register structures
+* Clock control macros
+* Generic macros (ENABLE/DISABLE)
+
+
+
+\---
+
+
+
+\### Driver Structure
+
+Each driver follows a consistent structure:
+
+
+
+\#### Header file
+
+* Configuration structures
+* Handle structures
+* Driver APIs
+
+
+
+\#### Source file
+
+* Implementation of APIs
+* Register configuration
+* Interrupt support
+
+
+
+\---
+
+
+
+\## Example Applications
+
+
+
+* Button interrupt toggling LED
+* SPI data transmission between STM32F407 Microcontroller and Arduino
+
+
+
+\### Technologies Used
+
+* Embedded C
+* ARM Cortex-M4
+* STM32F407 microcontroller
+* Bare-metal programming
+* Register-level peripheral configuration
+* Interrupt architecture
+* SPI communication
+
+
+
+\---
+
+
+
+\## Future Development
+
+
+
+This project will progressively implement additional drivers:
+
+
+
+Planned drivers:
+
+* USART Driver
+* I2C Driver
+* Advanced SPI features
+* Timer Driver
+* RTOS integration experiments
+* DMA support
+
+
+
+\---
+
+
+
+\## Learning Goals
+
+
+
+This project aims to develop deeper understanding of:
+
+* microcontroller hardware architecture
+* peripheral driver design
+* interrupt-based embedded software
+* communication protocol implementation
+* clean driver abstraction
+
+
+
+\---
 
 
 
@@ -135,6 +270,7 @@ drivers/
 
 
 * STM32F407xx Discovery Board
+* Arduino Uno
 * STM32CubeIDE
 * GCC ARM Embedded Toolchain
 * Debugging via ST-Link
@@ -142,12 +278,31 @@ drivers/
 
 
 
-**## Planned Features**
+\---
 
-* EXTI interrupt support
-* USART driver (polling + interrupt)
-* I2C driver
-* NVIC abstraction layer
+
+
+\## Author
+
+
+
+Joel Kevin Likane Zindjou
+
+
+
+Junior Embedded Software Developer
+
+Bachelor in Technical Computer Science
+
+
+
+Focus areas:
+
+* Embedded C / C++
+* ARM Cortex-M
+* Bare-metal programming
+* Embedded communication protocols
+* firmware architecture
 
 
 
