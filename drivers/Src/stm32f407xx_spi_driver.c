@@ -254,9 +254,31 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
 * @note			- none
 *
 ********************************************************************************/
-void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len)
 {
+	while(len> 0)
+	{
+		//1. wait until RXNE is set
+		while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET); //Here we are polling for the RXNE flag to SET
 
+		//2. check the DFF bit in CR1
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			//16 bit DFF
+			//1. Read  the data from the DR to Rx buffer address
+			*((uint16_t*)pRxBuffer) = pSPIx->DR;
+			len--;
+			len--;
+			(uint16_t*)pRxBuffer++;
+		}
+		else
+		{
+			//8 bit DFF
+			*pRxBuffer = pSPIx->DR;
+			len--;
+			pRxBuffer++;
+		}
+	}
 }
 
 //IRQ configuration and ISR handling

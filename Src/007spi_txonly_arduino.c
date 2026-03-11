@@ -1,6 +1,23 @@
 /*
  * 007spi_txonly_arduino.c
  *
+ *SPI Master (STM32F407cxx) and SPI Slave (Arduino) communication
+ *When the user button on the master is pressed the master should send a string to the arduino slave
+ *connected. The received data will be displayed on the arduino serial port.
+ *
+ *1.We use SPI Full duplex
+ *2.ST board will be in SPI master mode and Arduino in slave mode
+ *3.DFF = 0 (1 byte data frame format)
+ *4.SSM = 0 (we use hardware slave management)
+ *5.SCLK speed = 2MHz, fclk = 16MHz
+ *5.MISO is not configured since the master will not receive any data from the slave
+ *
+ *Power the arduino board and download SPI slave sketch
+ *sketch folder: test/Arduino/SPI/001SPISlaveRxString/001SPISlaveRxString.ino
+ *
+ *Note: Slave does not no how many bytes of data master is going to sent. So master first sends the
+ *number bytes info which slave is going to receive next.
+ *
  *  Created on: 04.03.2026
  *      Author: Joelikane
  */
@@ -60,7 +77,7 @@ void SPI2_Inits(void)
 	SPI_Init(&SPI2Handle);
 }
 
-void GPIO_ButtonInit()
+void GPIO_ButtonInit(void)
 {
 	GPIO_Handle_t GPIOBtn;
 
@@ -107,7 +124,7 @@ int main(void)
 
 	while(1)
 	{
-
+		//wait till button is pressed
 		while( ! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0) );
 
 		//to avoid button de-bouncing related issues: 200mms of delay
@@ -119,7 +136,7 @@ int main(void)
 		//first send length information
 		/*
 		 * The Arduino sketch expects 1 byte of length
-		 * information followed bythe data
+		 * information followed by the data
 		 */
 		uint8_t dataLen = strlen(user_data);
 		SPI_SendData(SPI2, &dataLen, 1); //send the information about the length of the data
