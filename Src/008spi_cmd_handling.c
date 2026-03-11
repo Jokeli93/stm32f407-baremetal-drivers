@@ -1,7 +1,7 @@
 /*
  * 008spi_cmd_handling.c
  *
- *SPi Master (STM) amd SPI Slave (Arduino) command & response based communication.
+ *SPI Master (STM) and SPI Slave (Arduino) command & response based communication.
  *
  *When the user button on the master is pressed, master send a command to the slave and slave responds
  *as per the command implementation.

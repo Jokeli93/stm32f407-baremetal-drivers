@@ -400,3 +400,52 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 	else
 		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
 }
+
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t len)
+{
+	uint8_t state = pSPIHandle->TxState;
+
+	if(state != SPI_BUSY_IN_TX)
+	{
+		//1. Save the Tx buffer address and Len information in some global variables
+		pSPIHandle->pTxBuffer = pTxBuffer;
+		pSPIHandle->TxLen = len;
+
+		//2. Mark the SPI state as busy in transmission so that no oder code can take over same
+		//   SPI peripheral until transmission is over
+		pSPIHandle->TxState= SPI_BUSY_IN_TX;
+
+		//3. Enable TXEIE control bit to get interrupt whenever TXE flag is set in SR
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE);
+
+	}
+
+	//4. Data transmission will be handle by the ISR code (to implement later)
+
+	return state;
+
+}
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t len)
+{
+	uint8_t state = pSPIHandle->RxState;
+
+	if(state != SPI_BUSY_IN_RX)
+	{
+		//1. Save the Tx buffer address and Len information in some global variables
+		pSPIHandle->pRxBuffer = pRxBuffer;
+		pSPIHandle->RxLen = len;
+
+		//2. Mark the SPI state as busy in transmission so that no oder code can take over same
+		//   SPI peripheral until transmission is over
+		pSPIHandle->RxState= SPI_BUSY_IN_RX;
+
+		//3. Enable TXEIE control bit to get interrupt whenever TXE flag is set in SR
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
+
+	}
+
+	//4. Data transmission will be handle by the ISR code (to implement later)
+
+	return state;
+
+}
