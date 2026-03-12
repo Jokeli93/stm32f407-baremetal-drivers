@@ -4,9 +4,11 @@
 ../drivers/Src/stm32f407xx_spi_driver.c:192:9:SPI_GetFlagStatus	2
 ../drivers/Src/stm32f407xx_spi_driver.c:216:6:SPI_SendData	4
 ../drivers/Src/stm32f407xx_spi_driver.c:257:6:SPI_ReceiveData	4
-../drivers/Src/stm32f407xx_spi_driver.c:299:6:SPI_IRQInterruptConfig	1
-../drivers/Src/stm32f407xx_spi_driver.c:318:6:SPI_IRQPriorityConfig	1
-../drivers/Src/stm32f407xx_spi_driver.c:335:6:SPI_IRQHandling	1
-../drivers/Src/stm32f407xx_spi_driver.c:353:6:SPI_PeripheralControl	2
-../drivers/Src/stm32f407xx_spi_driver.c:374:6:SPI_SSIConfig	2
-../drivers/Src/stm32f407xx_spi_driver.c:396:6:SPI_SSOEConfig	2
+../drivers/Src/stm32f407xx_spi_driver.c:298:9:SPI_SendDataIT	2
+../drivers/Src/stm32f407xx_spi_driver.c:337:9:SPI_ReceiveDataIT	2
+../drivers/Src/stm32f407xx_spi_driver.c:377:6:SPI_IRQInterruptConfig	12
+../drivers/Src/stm32f407xx_spi_driver.c:437:6:SPI_IRQPriorityConfig	1
+../drivers/Src/stm32f407xx_spi_driver.c:458:6:SPI_IRQHandling	1
+../drivers/Src/stm32f407xx_spi_driver.c:476:6:SPI_PeripheralControl	2
+../drivers/Src/stm32f407xx_spi_driver.c:497:6:SPI_SSIConfig	2
+../drivers/Src/stm32f407xx_spi_driver.c:519:6:SPI_SSOEConfig	2

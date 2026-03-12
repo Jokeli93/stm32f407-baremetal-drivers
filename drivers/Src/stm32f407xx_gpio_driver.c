@@ -375,7 +375,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
 /*******************************************************************************
 * @fn			- GPIO_IRQInterruptConfig
 *
-* @brief		-This function enables/disable the interrupt of  a given IRQ number
+* @brief		-This function enables/disable the interrupt of a given IRQ number
 *
 *  @param[in]	- IRQ number
 *  @param[in]	- ENABLE or DISABLE macro
