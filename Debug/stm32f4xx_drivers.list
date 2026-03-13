@@ -29,25 +29,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  12 .ARM.attributes 0000002a  00000000  00000000  0000305c  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00001c91  00000000  00000000  00003086  2**0
+ 13 .debug_info   00001df7  00000000  00000000  00003086  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00000795  00000000  00000000  00004d17  2**0
+ 14 .debug_abbrev 00000792  00000000  00000000  00004e7d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000230  00000000  00000000  000054b0  2**3
+ 15 .debug_aranges 00000268  00000000  00000000  00005610  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 0000018f  00000000  00000000  000056e0  2**0
+ 16 .debug_rnglists 000001bc  00000000  00000000  00005878  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000035fb  00000000  00000000  0000586f  2**0
+ 17 .debug_macro  00003647  00000000  00000000  00005a34  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00002b25  00000000  00000000  00008e6a  2**0
+ 18 .debug_line   00002d28  00000000  00000000  0000907b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    0000c105  00000000  00000000  0000b98f  2**0
+ 19 .debug_str    0000c222  00000000  00000000  0000bda3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  00017a94  2**0
+ 20 .comment      00000043  00000000  00000000  00017fc5  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00000e08  00000000  00000000  00017ad8  2**2
+ 21 .debug_frame  00000f04  00000000  00000000  00018008  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 000000c9  00000000  00000000  000188e0  2**0
+ 22 .debug_line_str 000000c9  00000000  00000000  00018f0c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -341,7 +341,7 @@ int main(void)
 	SPI_SSOEConfig(SPI2, ENABLE);
  800030a:	2101      	movs	r1, #1
  800030c:	48cf      	ldr	r0, [pc, #828]	@ (800064c <main+0x360>)
- 800030e:	f000 fec5 	bl	800109c <SPI_SSOEConfig>
+ 800030e:	f000 feb2 	bl	8001076 <SPI_SSOEConfig>
 
 	while(1)
 	{
@@ -370,7 +370,7 @@ int main(void)
 		SPI_PeripheralControl(SPI2, ENABLE);
  800032c:	2101      	movs	r1, #1
  800032e:	48c7      	ldr	r0, [pc, #796]	@ (800064c <main+0x360>)
- 8000330:	f000 fe99 	bl	8001066 <SPI_PeripheralControl>
+ 8000330:	f000 fe86 	bl	8001040 <SPI_PeripheralControl>
 
 
 		//1. CMD_LED_CTRL  <pin no(1)>  <value(1)>
@@ -387,7 +387,7 @@ int main(void)
  800033e:	2201      	movs	r2, #1
  8000340:	4619      	mov	r1, r3
  8000342:	48c2      	ldr	r0, [pc, #776]	@ (800064c <main+0x360>)
- 8000344:	f000 fe21 	bl	8000f8a <SPI_SendData>
+ 8000344:	f000 fe0e 	bl	8000f64 <SPI_SendData>
 
 		//do dummy read to clear off the RXNE
 		SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -395,7 +395,7 @@ int main(void)
  800034c:	2201      	movs	r2, #1
  800034e:	4619      	mov	r1, r3
  8000350:	48be      	ldr	r0, [pc, #760]	@ (800064c <main+0x360>)
- 8000352:	f000 fe51 	bl	8000ff8 <SPI_ReceiveData>
+ 8000352:	f000 fe3e 	bl	8000fd2 <SPI_ReceiveData>
 
 		//Send some dummy bits (1 byte) to fetch the response from the slave
 		SPI_SendData(SPI2, &dummy_write, 1);
@@ -403,7 +403,7 @@ int main(void)
  800035a:	2201      	movs	r2, #1
  800035c:	4619      	mov	r1, r3
  800035e:	48bb      	ldr	r0, [pc, #748]	@ (800064c <main+0x360>)
- 8000360:	f000 fe13 	bl	8000f8a <SPI_SendData>
+ 8000360:	f000 fe00 	bl	8000f64 <SPI_SendData>
 
 		//Read the ack byte received
 		SPI_ReceiveData(SPI2, &ackByte, 1);
@@ -411,7 +411,7 @@ int main(void)
  8000368:	2201      	movs	r2, #1
  800036a:	4619      	mov	r1, r3
  800036c:	48b7      	ldr	r0, [pc, #732]	@ (800064c <main+0x360>)
- 800036e:	f000 fe43 	bl	8000ff8 <SPI_ReceiveData>
+ 800036e:	f000 fe30 	bl	8000fd2 <SPI_ReceiveData>
 
 		if(SPI_VerifyResponse(ackByte))
  8000372:	f897 302c 	ldrb.w	r3, [r7, #44]	@ 0x2c
@@ -433,7 +433,7 @@ int main(void)
  8000392:	2202      	movs	r2, #2
  8000394:	4619      	mov	r1, r3
  8000396:	48ad      	ldr	r0, [pc, #692]	@ (800064c <main+0x360>)
- 8000398:	f000 fdf7 	bl	8000f8a <SPI_SendData>
+ 8000398:	f000 fde4 	bl	8000f64 <SPI_SendData>
 
 			// dummy read to clear RXNE flag
 			SPI_ReceiveData(SPI2,args,2);
@@ -441,7 +441,7 @@ int main(void)
  80003a0:	2202      	movs	r2, #2
  80003a2:	4619      	mov	r1, r3
  80003a4:	48a9      	ldr	r0, [pc, #676]	@ (800064c <main+0x360>)
- 80003a6:	f000 fe27 	bl	8000ff8 <SPI_ReceiveData>
+ 80003a6:	f000 fe14 	bl	8000fd2 <SPI_ReceiveData>
 
 
 		//2. COMMAND_SENSOR_READ
@@ -470,7 +470,7 @@ int main(void)
  80003c8:	2201      	movs	r2, #1
  80003ca:	4619      	mov	r1, r3
  80003cc:	489f      	ldr	r0, [pc, #636]	@ (800064c <main+0x360>)
- 80003ce:	f000 fddc 	bl	8000f8a <SPI_SendData>
+ 80003ce:	f000 fdc9 	bl	8000f64 <SPI_SendData>
 
 		//do dummy read to clear off the RXNE
 		SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -478,7 +478,7 @@ int main(void)
  80003d6:	2201      	movs	r2, #1
  80003d8:	4619      	mov	r1, r3
  80003da:	489c      	ldr	r0, [pc, #624]	@ (800064c <main+0x360>)
- 80003dc:	f000 fe0c 	bl	8000ff8 <SPI_ReceiveData>
+ 80003dc:	f000 fdf9 	bl	8000fd2 <SPI_ReceiveData>
 
 		//Send some dummy bits (1 byte) to fetch the response from the slave
 		SPI_SendData(SPI2, &dummy_write, 1);
@@ -486,7 +486,7 @@ int main(void)
  80003e4:	2201      	movs	r2, #1
  80003e6:	4619      	mov	r1, r3
  80003e8:	4898      	ldr	r0, [pc, #608]	@ (800064c <main+0x360>)
- 80003ea:	f000 fdce 	bl	8000f8a <SPI_SendData>
+ 80003ea:	f000 fdbb 	bl	8000f64 <SPI_SendData>
 
 		//Read the ack byte received
 		SPI_ReceiveData(SPI2, &ackByte, 1);
@@ -494,7 +494,7 @@ int main(void)
  80003f2:	2201      	movs	r2, #1
  80003f4:	4619      	mov	r1, r3
  80003f6:	4895      	ldr	r0, [pc, #596]	@ (800064c <main+0x360>)
- 80003f8:	f000 fdfe 	bl	8000ff8 <SPI_ReceiveData>
+ 80003f8:	f000 fdeb 	bl	8000fd2 <SPI_ReceiveData>
 
 		if(SPI_VerifyResponse(ackByte))
  80003fc:	f897 302c 	ldrb.w	r3, [r7, #44]	@ 0x2c
@@ -513,7 +513,7 @@ int main(void)
  8000416:	2201      	movs	r2, #1
  8000418:	4619      	mov	r1, r3
  800041a:	488c      	ldr	r0, [pc, #560]	@ (800064c <main+0x360>)
- 800041c:	f000 fdb5 	bl	8000f8a <SPI_SendData>
+ 800041c:	f000 fda2 	bl	8000f64 <SPI_SendData>
 
 			//do dummy read to clear off the RXNE
 			SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -521,7 +521,7 @@ int main(void)
  8000424:	2201      	movs	r2, #1
  8000426:	4619      	mov	r1, r3
  8000428:	4888      	ldr	r0, [pc, #544]	@ (800064c <main+0x360>)
- 800042a:	f000 fde5 	bl	8000ff8 <SPI_ReceiveData>
+ 800042a:	f000 fdd2 	bl	8000fd2 <SPI_ReceiveData>
 
 			//insert some dalay so that slave can be ready with the data
 			delay();
@@ -533,7 +533,7 @@ int main(void)
  8000436:	2201      	movs	r2, #1
  8000438:	4619      	mov	r1, r3
  800043a:	4884      	ldr	r0, [pc, #528]	@ (800064c <main+0x360>)
- 800043c:	f000 fda5 	bl	8000f8a <SPI_SendData>
+ 800043c:	f000 fd92 	bl	8000f64 <SPI_SendData>
 
 			uint8_t analog_read;
 			SPI_ReceiveData(SPI2, &analog_read, 1);
@@ -541,7 +541,7 @@ int main(void)
  8000442:	2201      	movs	r2, #1
  8000444:	4619      	mov	r1, r3
  8000446:	4881      	ldr	r0, [pc, #516]	@ (800064c <main+0x360>)
- 8000448:	f000 fdd6 	bl	8000ff8 <SPI_ReceiveData>
+ 8000448:	f000 fdc3 	bl	8000fd2 <SPI_ReceiveData>
 
 		}
 
@@ -570,7 +570,7 @@ int main(void)
  800046a:	2201      	movs	r2, #1
  800046c:	4619      	mov	r1, r3
  800046e:	4877      	ldr	r0, [pc, #476]	@ (800064c <main+0x360>)
- 8000470:	f000 fd8b 	bl	8000f8a <SPI_SendData>
+ 8000470:	f000 fd78 	bl	8000f64 <SPI_SendData>
 
 		//do dummy read to clear off the RXNE
 		SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -578,7 +578,7 @@ int main(void)
  8000478:	2201      	movs	r2, #1
  800047a:	4619      	mov	r1, r3
  800047c:	4873      	ldr	r0, [pc, #460]	@ (800064c <main+0x360>)
- 800047e:	f000 fdbb 	bl	8000ff8 <SPI_ReceiveData>
+ 800047e:	f000 fda8 	bl	8000fd2 <SPI_ReceiveData>
 
 		//Send some dummy bits (1 byte) to fetch the response from the slave
 		SPI_SendData(SPI2, &dummy_write, 1);
@@ -586,7 +586,7 @@ int main(void)
  8000486:	2201      	movs	r2, #1
  8000488:	4619      	mov	r1, r3
  800048a:	4870      	ldr	r0, [pc, #448]	@ (800064c <main+0x360>)
- 800048c:	f000 fd7d 	bl	8000f8a <SPI_SendData>
+ 800048c:	f000 fd6a 	bl	8000f64 <SPI_SendData>
 
 		//Read the ack byte received
 		SPI_ReceiveData(SPI2, &ackByte, 1);
@@ -594,7 +594,7 @@ int main(void)
  8000494:	2201      	movs	r2, #1
  8000496:	4619      	mov	r1, r3
  8000498:	486c      	ldr	r0, [pc, #432]	@ (800064c <main+0x360>)
- 800049a:	f000 fdad 	bl	8000ff8 <SPI_ReceiveData>
+ 800049a:	f000 fd9a 	bl	8000fd2 <SPI_ReceiveData>
 
 		if(SPI_VerifyResponse(ackByte))
  800049e:	f897 302c 	ldrb.w	r3, [r7, #44]	@ 0x2c
@@ -613,7 +613,7 @@ int main(void)
  80004b8:	2201      	movs	r2, #1
  80004ba:	4619      	mov	r1, r3
  80004bc:	4863      	ldr	r0, [pc, #396]	@ (800064c <main+0x360>)
- 80004be:	f000 fd64 	bl	8000f8a <SPI_SendData>
+ 80004be:	f000 fd51 	bl	8000f64 <SPI_SendData>
 
 			//do dummy read to clear off the RXNE
 			SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -621,7 +621,7 @@ int main(void)
  80004c6:	2201      	movs	r2, #1
  80004c8:	4619      	mov	r1, r3
  80004ca:	4860      	ldr	r0, [pc, #384]	@ (800064c <main+0x360>)
- 80004cc:	f000 fd94 	bl	8000ff8 <SPI_ReceiveData>
+ 80004cc:	f000 fd81 	bl	8000fd2 <SPI_ReceiveData>
 
 			//insert some dalay so that slave can be ready with the data
 			delay();
@@ -633,7 +633,7 @@ int main(void)
  80004d8:	2201      	movs	r2, #1
  80004da:	4619      	mov	r1, r3
  80004dc:	485b      	ldr	r0, [pc, #364]	@ (800064c <main+0x360>)
- 80004de:	f000 fd54 	bl	8000f8a <SPI_SendData>
+ 80004de:	f000 fd41 	bl	8000f64 <SPI_SendData>
 
 			uint8_t led_sattus;
 			SPI_ReceiveData(SPI2, &led_sattus, 1);
@@ -641,7 +641,7 @@ int main(void)
  80004e4:	2201      	movs	r2, #1
  80004e6:	4619      	mov	r1, r3
  80004e8:	4858      	ldr	r0, [pc, #352]	@ (800064c <main+0x360>)
- 80004ea:	f000 fd85 	bl	8000ff8 <SPI_ReceiveData>
+ 80004ea:	f000 fd72 	bl	8000fd2 <SPI_ReceiveData>
 
 		}
 
@@ -670,7 +670,7 @@ int main(void)
  800050c:	2201      	movs	r2, #1
  800050e:	4619      	mov	r1, r3
  8000510:	484e      	ldr	r0, [pc, #312]	@ (800064c <main+0x360>)
- 8000512:	f000 fd3a 	bl	8000f8a <SPI_SendData>
+ 8000512:	f000 fd27 	bl	8000f64 <SPI_SendData>
 
 		//do dummy read to clear off the RXNE
 		SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -678,7 +678,7 @@ int main(void)
  800051a:	2201      	movs	r2, #1
  800051c:	4619      	mov	r1, r3
  800051e:	484b      	ldr	r0, [pc, #300]	@ (800064c <main+0x360>)
- 8000520:	f000 fd6a 	bl	8000ff8 <SPI_ReceiveData>
+ 8000520:	f000 fd57 	bl	8000fd2 <SPI_ReceiveData>
 
 		//Send some dummy bits (1 byte) to fetch the response from the slave
 		SPI_SendData(SPI2, &dummy_write, 1);
@@ -686,7 +686,7 @@ int main(void)
  8000528:	2201      	movs	r2, #1
  800052a:	4619      	mov	r1, r3
  800052c:	4847      	ldr	r0, [pc, #284]	@ (800064c <main+0x360>)
- 800052e:	f000 fd2c 	bl	8000f8a <SPI_SendData>
+ 800052e:	f000 fd19 	bl	8000f64 <SPI_SendData>
 
 		//Read the ack byte received
 		SPI_ReceiveData(SPI2, &ackByte, 1);
@@ -694,7 +694,7 @@ int main(void)
  8000536:	2201      	movs	r2, #1
  8000538:	4619      	mov	r1, r3
  800053a:	4844      	ldr	r0, [pc, #272]	@ (800064c <main+0x360>)
- 800053c:	f000 fd5c 	bl	8000ff8 <SPI_ReceiveData>
+ 800053c:	f000 fd49 	bl	8000fd2 <SPI_ReceiveData>
 
 		uint8_t message [] = "Hello ! How are you ??";
  8000540:	4b44      	ldr	r3, [pc, #272]	@ (8000654 <main+0x368>)
@@ -731,7 +731,7 @@ int main(void)
  8000582:	2201      	movs	r2, #1
  8000584:	4619      	mov	r1, r3
  8000586:	4831      	ldr	r0, [pc, #196]	@ (800064c <main+0x360>)
- 8000588:	f000 fcff 	bl	8000f8a <SPI_SendData>
+ 8000588:	f000 fcec 	bl	8000f64 <SPI_SendData>
 
 			//do dummy read to clear off the RXNE
 			SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -739,7 +739,7 @@ int main(void)
  8000590:	2201      	movs	r2, #1
  8000592:	4619      	mov	r1, r3
  8000594:	482d      	ldr	r0, [pc, #180]	@ (800064c <main+0x360>)
- 8000596:	f000 fd2f 	bl	8000ff8 <SPI_ReceiveData>
+ 8000596:	f000 fd1c 	bl	8000fd2 <SPI_ReceiveData>
 
 			//insert some dalay so that slave can be ready with the data
 			delay();
@@ -759,13 +759,13 @@ int main(void)
  80005ac:	2201      	movs	r2, #1
  80005ae:	4619      	mov	r1, r3
  80005b0:	4826      	ldr	r0, [pc, #152]	@ (800064c <main+0x360>)
- 80005b2:	f000 fcea 	bl	8000f8a <SPI_SendData>
+ 80005b2:	f000 fcd7 	bl	8000f64 <SPI_SendData>
 				SPI_ReceiveData(SPI2, &dummy_read, 1);
  80005b6:	f107 032e 	add.w	r3, r7, #46	@ 0x2e
  80005ba:	2201      	movs	r2, #1
  80005bc:	4619      	mov	r1, r3
  80005be:	4823      	ldr	r0, [pc, #140]	@ (800064c <main+0x360>)
- 80005c0:	f000 fd1a 	bl	8000ff8 <SPI_ReceiveData>
+ 80005c0:	f000 fd07 	bl	8000fd2 <SPI_ReceiveData>
 			for(int i = 0; i < args[0]; i++)
  80005c4:	6b7b      	ldr	r3, [r7, #52]	@ 0x34
  80005c6:	3301      	adds	r3, #1
@@ -803,7 +803,7 @@ int main(void)
  80005f4:	2201      	movs	r2, #1
  80005f6:	4619      	mov	r1, r3
  80005f8:	4814      	ldr	r0, [pc, #80]	@ (800064c <main+0x360>)
- 80005fa:	f000 fcc6 	bl	8000f8a <SPI_SendData>
+ 80005fa:	f000 fcb3 	bl	8000f64 <SPI_SendData>
 
 		//do dummy read to clear off the RXNE
 		SPI_ReceiveData(SPI2, &dummy_read, 1);
@@ -811,7 +811,7 @@ int main(void)
  8000602:	2201      	movs	r2, #1
  8000604:	4619      	mov	r1, r3
  8000606:	4811      	ldr	r0, [pc, #68]	@ (800064c <main+0x360>)
- 8000608:	f000 fcf6 	bl	8000ff8 <SPI_ReceiveData>
+ 8000608:	f000 fce3 	bl	8000fd2 <SPI_ReceiveData>
 
 		//Send some dummy byte to fetch the response from the slave
 		SPI_SendData(SPI2, &dummy_write, 1);
@@ -819,7 +819,7 @@ int main(void)
  8000610:	2201      	movs	r2, #1
  8000612:	4619      	mov	r1, r3
  8000614:	480d      	ldr	r0, [pc, #52]	@ (800064c <main+0x360>)
- 8000616:	f000 fcb8 	bl	8000f8a <SPI_SendData>
+ 8000616:	f000 fca5 	bl	8000f64 <SPI_SendData>
 
 		//read the ack byte received
 		SPI_ReceiveData(SPI2, &ackByte, 1);
@@ -827,7 +827,7 @@ int main(void)
  800061e:	2201      	movs	r2, #1
  8000620:	4619      	mov	r1, r3
  8000622:	480a      	ldr	r0, [pc, #40]	@ (800064c <main+0x360>)
- 8000624:	f000 fce8 	bl	8000ff8 <SPI_ReceiveData>
+ 8000624:	f000 fcd5 	bl	8000fd2 <SPI_ReceiveData>
 
 		uint8_t id[11];
 		uint32_t i = 0;
@@ -859,7 +859,7 @@ int main(void)
  800065c:	2201      	movs	r2, #1
  800065e:	4619      	mov	r1, r3
  8000660:	480f      	ldr	r0, [pc, #60]	@ (80006a0 <main+0x3b4>)
- 8000662:	f000 fc92 	bl	8000f8a <SPI_SendData>
+ 8000662:	f000 fc7f 	bl	8000f64 <SPI_SendData>
 				SPI_ReceiveData(SPI2, &id[i], 1);
  8000666:	1d3a      	adds	r2, r7, #4
  8000668:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
@@ -867,7 +867,7 @@ int main(void)
  800066c:	2201      	movs	r2, #1
  800066e:	4619      	mov	r1, r3
  8000670:	480b      	ldr	r0, [pc, #44]	@ (80006a0 <main+0x3b4>)
- 8000672:	f000 fcc1 	bl	8000ff8 <SPI_ReceiveData>
+ 8000672:	f000 fcae 	bl	8000fd2 <SPI_ReceiveData>
 			for(i = 0; i < 10; i++)
  8000676:	6b3b      	ldr	r3, [r7, #48]	@ 0x30
  8000678:	3301      	adds	r3, #1
@@ -889,7 +889,7 @@ int main(void)
  8000686:	bf00      	nop
  8000688:	2180      	movs	r1, #128	@ 0x80
  800068a:	4805      	ldr	r0, [pc, #20]	@ (80006a0 <main+0x3b4>)
- 800068c:	f000 fc6a 	bl	8000f64 <SPI_GetFlagStatus>
+ 800068c:	f000 fd0e 	bl	80010ac <SPI_GetFlagStatus>
  8000690:	4603      	mov	r3, r0
  8000692:	2b00      	cmp	r3, #0
  8000694:	d1f8      	bne.n	8000688 <main+0x39c>
@@ -898,7 +898,7 @@ int main(void)
 		SPI_PeripheralControl(SPI2, DISABLE);
  8000696:	2100      	movs	r1, #0
  8000698:	4801      	ldr	r0, [pc, #4]	@ (80006a0 <main+0x3b4>)
- 800069a:	f000 fce4 	bl	8001066 <SPI_PeripheralControl>
+ 800069a:	f000 fcd1 	bl	8001040 <SPI_PeripheralControl>
 	{
  800069e:	e638      	b.n	8000312 <main+0x26>
  80006a0:	40003800 	.word	0x40003800
@@ -2384,287 +2384,284 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
  8000f60:	46bd      	mov	sp, r7
  8000f62:	bd80      	pop	{r7, pc}
 
-08000f64 <SPI_GetFlagStatus>:
-		}
-}
-
-
-uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t flagName)
-{
- 8000f64:	b480      	push	{r7}
- 8000f66:	b083      	sub	sp, #12
- 8000f68:	af00      	add	r7, sp, #0
- 8000f6a:	6078      	str	r0, [r7, #4]
- 8000f6c:	6039      	str	r1, [r7, #0]
-	if(pSPIx->SR & flagName)
- 8000f6e:	687b      	ldr	r3, [r7, #4]
- 8000f70:	689a      	ldr	r2, [r3, #8]
- 8000f72:	683b      	ldr	r3, [r7, #0]
- 8000f74:	4013      	ands	r3, r2
- 8000f76:	2b00      	cmp	r3, #0
- 8000f78:	d001      	beq.n	8000f7e <SPI_GetFlagStatus+0x1a>
-	{
-		return FLAG_SET;
- 8000f7a:	2301      	movs	r3, #1
- 8000f7c:	e000      	b.n	8000f80 <SPI_GetFlagStatus+0x1c>
-	}
-
-	return FLAG_RESET;
- 8000f7e:	2300      	movs	r3, #0
-}
- 8000f80:	4618      	mov	r0, r3
- 8000f82:	370c      	adds	r7, #12
- 8000f84:	46bd      	mov	sp, r7
- 8000f86:	bc80      	pop	{r7}
- 8000f88:	4770      	bx	lr
-
-08000f8a <SPI_SendData>:
+08000f64 <SPI_SendData>:
 *
 * @note			- This is a blocking call (polling based code)
 *
 ********************************************************************************/
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
 {
- 8000f8a:	b580      	push	{r7, lr}
- 8000f8c:	b084      	sub	sp, #16
- 8000f8e:	af00      	add	r7, sp, #0
- 8000f90:	60f8      	str	r0, [r7, #12]
- 8000f92:	60b9      	str	r1, [r7, #8]
- 8000f94:	607a      	str	r2, [r7, #4]
+ 8000f64:	b580      	push	{r7, lr}
+ 8000f66:	b084      	sub	sp, #16
+ 8000f68:	af00      	add	r7, sp, #0
+ 8000f6a:	60f8      	str	r0, [r7, #12]
+ 8000f6c:	60b9      	str	r1, [r7, #8]
+ 8000f6e:	607a      	str	r2, [r7, #4]
 	while(len> 0)
- 8000f96:	e027      	b.n	8000fe8 <SPI_SendData+0x5e>
+ 8000f70:	e027      	b.n	8000fc2 <SPI_SendData+0x5e>
 	{
 		//1. wait until TXE is set
 		while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET); //Here we are polling for the TXE flag to SET
- 8000f98:	bf00      	nop
- 8000f9a:	2102      	movs	r1, #2
- 8000f9c:	68f8      	ldr	r0, [r7, #12]
- 8000f9e:	f7ff ffe1 	bl	8000f64 <SPI_GetFlagStatus>
- 8000fa2:	4603      	mov	r3, r0
- 8000fa4:	2b00      	cmp	r3, #0
- 8000fa6:	d0f8      	beq.n	8000f9a <SPI_SendData+0x10>
+ 8000f72:	bf00      	nop
+ 8000f74:	2102      	movs	r1, #2
+ 8000f76:	68f8      	ldr	r0, [r7, #12]
+ 8000f78:	f000 f898 	bl	80010ac <SPI_GetFlagStatus>
+ 8000f7c:	4603      	mov	r3, r0
+ 8000f7e:	2b00      	cmp	r3, #0
+ 8000f80:	d0f8      	beq.n	8000f74 <SPI_SendData+0x10>
 
 		//2. check the DFF bit in CR1
 		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
- 8000fa8:	68fb      	ldr	r3, [r7, #12]
- 8000faa:	681b      	ldr	r3, [r3, #0]
- 8000fac:	f403 6300 	and.w	r3, r3, #2048	@ 0x800
- 8000fb0:	2b00      	cmp	r3, #0
- 8000fb2:	d00e      	beq.n	8000fd2 <SPI_SendData+0x48>
+ 8000f82:	68fb      	ldr	r3, [r7, #12]
+ 8000f84:	681b      	ldr	r3, [r3, #0]
+ 8000f86:	f403 6300 	and.w	r3, r3, #2048	@ 0x800
+ 8000f8a:	2b00      	cmp	r3, #0
+ 8000f8c:	d00e      	beq.n	8000fac <SPI_SendData+0x48>
 		{
 			//16 bit DFF
 			//1. load the data in to the DR
 			pSPIx->DR = *((uint16_t*)pTxBuffer);
- 8000fb4:	68bb      	ldr	r3, [r7, #8]
- 8000fb6:	881b      	ldrh	r3, [r3, #0]
- 8000fb8:	461a      	mov	r2, r3
- 8000fba:	68fb      	ldr	r3, [r7, #12]
- 8000fbc:	60da      	str	r2, [r3, #12]
+ 8000f8e:	68bb      	ldr	r3, [r7, #8]
+ 8000f90:	881b      	ldrh	r3, [r3, #0]
+ 8000f92:	461a      	mov	r2, r3
+ 8000f94:	68fb      	ldr	r3, [r7, #12]
+ 8000f96:	60da      	str	r2, [r3, #12]
 			len--;
- 8000fbe:	687b      	ldr	r3, [r7, #4]
- 8000fc0:	3b01      	subs	r3, #1
- 8000fc2:	607b      	str	r3, [r7, #4]
+ 8000f98:	687b      	ldr	r3, [r7, #4]
+ 8000f9a:	3b01      	subs	r3, #1
+ 8000f9c:	607b      	str	r3, [r7, #4]
 			len--;
- 8000fc4:	687b      	ldr	r3, [r7, #4]
- 8000fc6:	3b01      	subs	r3, #1
- 8000fc8:	607b      	str	r3, [r7, #4]
+ 8000f9e:	687b      	ldr	r3, [r7, #4]
+ 8000fa0:	3b01      	subs	r3, #1
+ 8000fa2:	607b      	str	r3, [r7, #4]
 			(uint16_t*)pTxBuffer++;
- 8000fca:	68bb      	ldr	r3, [r7, #8]
- 8000fcc:	3301      	adds	r3, #1
- 8000fce:	60bb      	str	r3, [r7, #8]
- 8000fd0:	e00a      	b.n	8000fe8 <SPI_SendData+0x5e>
+ 8000fa4:	68bb      	ldr	r3, [r7, #8]
+ 8000fa6:	3301      	adds	r3, #1
+ 8000fa8:	60bb      	str	r3, [r7, #8]
+ 8000faa:	e00a      	b.n	8000fc2 <SPI_SendData+0x5e>
 		}
 		else
 		{
 			//8 bit DFF
 			pSPIx->DR = *pTxBuffer;
- 8000fd2:	68bb      	ldr	r3, [r7, #8]
- 8000fd4:	781b      	ldrb	r3, [r3, #0]
- 8000fd6:	461a      	mov	r2, r3
- 8000fd8:	68fb      	ldr	r3, [r7, #12]
- 8000fda:	60da      	str	r2, [r3, #12]
+ 8000fac:	68bb      	ldr	r3, [r7, #8]
+ 8000fae:	781b      	ldrb	r3, [r3, #0]
+ 8000fb0:	461a      	mov	r2, r3
+ 8000fb2:	68fb      	ldr	r3, [r7, #12]
+ 8000fb4:	60da      	str	r2, [r3, #12]
 			len--;
- 8000fdc:	687b      	ldr	r3, [r7, #4]
- 8000fde:	3b01      	subs	r3, #1
- 8000fe0:	607b      	str	r3, [r7, #4]
+ 8000fb6:	687b      	ldr	r3, [r7, #4]
+ 8000fb8:	3b01      	subs	r3, #1
+ 8000fba:	607b      	str	r3, [r7, #4]
 			pTxBuffer++;
- 8000fe2:	68bb      	ldr	r3, [r7, #8]
- 8000fe4:	3301      	adds	r3, #1
- 8000fe6:	60bb      	str	r3, [r7, #8]
+ 8000fbc:	68bb      	ldr	r3, [r7, #8]
+ 8000fbe:	3301      	adds	r3, #1
+ 8000fc0:	60bb      	str	r3, [r7, #8]
 	while(len> 0)
- 8000fe8:	687b      	ldr	r3, [r7, #4]
- 8000fea:	2b00      	cmp	r3, #0
- 8000fec:	d1d4      	bne.n	8000f98 <SPI_SendData+0xe>
+ 8000fc2:	687b      	ldr	r3, [r7, #4]
+ 8000fc4:	2b00      	cmp	r3, #0
+ 8000fc6:	d1d4      	bne.n	8000f72 <SPI_SendData+0xe>
 		}
 	}
 }
- 8000fee:	bf00      	nop
- 8000ff0:	bf00      	nop
- 8000ff2:	3710      	adds	r7, #16
- 8000ff4:	46bd      	mov	sp, r7
- 8000ff6:	bd80      	pop	{r7, pc}
+ 8000fc8:	bf00      	nop
+ 8000fca:	bf00      	nop
+ 8000fcc:	3710      	adds	r7, #16
+ 8000fce:	46bd      	mov	sp, r7
+ 8000fd0:	bd80      	pop	{r7, pc}
 
-08000ff8 <SPI_ReceiveData>:
+08000fd2 <SPI_ReceiveData>:
 *
 * @note			- none
 *
 ********************************************************************************/
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len)
 {
- 8000ff8:	b580      	push	{r7, lr}
- 8000ffa:	b084      	sub	sp, #16
- 8000ffc:	af00      	add	r7, sp, #0
- 8000ffe:	60f8      	str	r0, [r7, #12]
- 8001000:	60b9      	str	r1, [r7, #8]
- 8001002:	607a      	str	r2, [r7, #4]
+ 8000fd2:	b580      	push	{r7, lr}
+ 8000fd4:	b084      	sub	sp, #16
+ 8000fd6:	af00      	add	r7, sp, #0
+ 8000fd8:	60f8      	str	r0, [r7, #12]
+ 8000fda:	60b9      	str	r1, [r7, #8]
+ 8000fdc:	607a      	str	r2, [r7, #4]
 	while(len> 0)
- 8001004:	e027      	b.n	8001056 <SPI_ReceiveData+0x5e>
+ 8000fde:	e027      	b.n	8001030 <SPI_ReceiveData+0x5e>
 	{
 		//1. wait until RXNE is set
 		while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET); //Here we are polling for the RXNE flag to SET
- 8001006:	bf00      	nop
- 8001008:	2101      	movs	r1, #1
- 800100a:	68f8      	ldr	r0, [r7, #12]
- 800100c:	f7ff ffaa 	bl	8000f64 <SPI_GetFlagStatus>
- 8001010:	4603      	mov	r3, r0
- 8001012:	2b00      	cmp	r3, #0
- 8001014:	d0f8      	beq.n	8001008 <SPI_ReceiveData+0x10>
+ 8000fe0:	bf00      	nop
+ 8000fe2:	2101      	movs	r1, #1
+ 8000fe4:	68f8      	ldr	r0, [r7, #12]
+ 8000fe6:	f000 f861 	bl	80010ac <SPI_GetFlagStatus>
+ 8000fea:	4603      	mov	r3, r0
+ 8000fec:	2b00      	cmp	r3, #0
+ 8000fee:	d0f8      	beq.n	8000fe2 <SPI_ReceiveData+0x10>
 
 		//2. check the DFF bit in CR1
 		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
- 8001016:	68fb      	ldr	r3, [r7, #12]
- 8001018:	681b      	ldr	r3, [r3, #0]
- 800101a:	f403 6300 	and.w	r3, r3, #2048	@ 0x800
- 800101e:	2b00      	cmp	r3, #0
- 8001020:	d00e      	beq.n	8001040 <SPI_ReceiveData+0x48>
+ 8000ff0:	68fb      	ldr	r3, [r7, #12]
+ 8000ff2:	681b      	ldr	r3, [r3, #0]
+ 8000ff4:	f403 6300 	and.w	r3, r3, #2048	@ 0x800
+ 8000ff8:	2b00      	cmp	r3, #0
+ 8000ffa:	d00e      	beq.n	800101a <SPI_ReceiveData+0x48>
 		{
 			//16 bit DFF
 			//1. Read  the data from the DR to Rx buffer address
 			*((uint16_t*)pRxBuffer) = pSPIx->DR;
- 8001022:	68fb      	ldr	r3, [r7, #12]
- 8001024:	68db      	ldr	r3, [r3, #12]
- 8001026:	b29a      	uxth	r2, r3
- 8001028:	68bb      	ldr	r3, [r7, #8]
- 800102a:	801a      	strh	r2, [r3, #0]
+ 8000ffc:	68fb      	ldr	r3, [r7, #12]
+ 8000ffe:	68db      	ldr	r3, [r3, #12]
+ 8001000:	b29a      	uxth	r2, r3
+ 8001002:	68bb      	ldr	r3, [r7, #8]
+ 8001004:	801a      	strh	r2, [r3, #0]
 			len--;
- 800102c:	687b      	ldr	r3, [r7, #4]
- 800102e:	3b01      	subs	r3, #1
- 8001030:	607b      	str	r3, [r7, #4]
+ 8001006:	687b      	ldr	r3, [r7, #4]
+ 8001008:	3b01      	subs	r3, #1
+ 800100a:	607b      	str	r3, [r7, #4]
 			len--;
- 8001032:	687b      	ldr	r3, [r7, #4]
- 8001034:	3b01      	subs	r3, #1
- 8001036:	607b      	str	r3, [r7, #4]
+ 800100c:	687b      	ldr	r3, [r7, #4]
+ 800100e:	3b01      	subs	r3, #1
+ 8001010:	607b      	str	r3, [r7, #4]
 			(uint16_t*)pRxBuffer++;
- 8001038:	68bb      	ldr	r3, [r7, #8]
- 800103a:	3301      	adds	r3, #1
- 800103c:	60bb      	str	r3, [r7, #8]
- 800103e:	e00a      	b.n	8001056 <SPI_ReceiveData+0x5e>
+ 8001012:	68bb      	ldr	r3, [r7, #8]
+ 8001014:	3301      	adds	r3, #1
+ 8001016:	60bb      	str	r3, [r7, #8]
+ 8001018:	e00a      	b.n	8001030 <SPI_ReceiveData+0x5e>
 		}
 		else
 		{
 			//8 bit DFF
 			*pRxBuffer = pSPIx->DR;
- 8001040:	68fb      	ldr	r3, [r7, #12]
- 8001042:	68db      	ldr	r3, [r3, #12]
- 8001044:	b2da      	uxtb	r2, r3
- 8001046:	68bb      	ldr	r3, [r7, #8]
- 8001048:	701a      	strb	r2, [r3, #0]
+ 800101a:	68fb      	ldr	r3, [r7, #12]
+ 800101c:	68db      	ldr	r3, [r3, #12]
+ 800101e:	b2da      	uxtb	r2, r3
+ 8001020:	68bb      	ldr	r3, [r7, #8]
+ 8001022:	701a      	strb	r2, [r3, #0]
 			len--;
- 800104a:	687b      	ldr	r3, [r7, #4]
- 800104c:	3b01      	subs	r3, #1
- 800104e:	607b      	str	r3, [r7, #4]
+ 8001024:	687b      	ldr	r3, [r7, #4]
+ 8001026:	3b01      	subs	r3, #1
+ 8001028:	607b      	str	r3, [r7, #4]
 			pRxBuffer++;
- 8001050:	68bb      	ldr	r3, [r7, #8]
- 8001052:	3301      	adds	r3, #1
- 8001054:	60bb      	str	r3, [r7, #8]
+ 800102a:	68bb      	ldr	r3, [r7, #8]
+ 800102c:	3301      	adds	r3, #1
+ 800102e:	60bb      	str	r3, [r7, #8]
 	while(len> 0)
- 8001056:	687b      	ldr	r3, [r7, #4]
- 8001058:	2b00      	cmp	r3, #0
- 800105a:	d1d4      	bne.n	8001006 <SPI_ReceiveData+0xe>
+ 8001030:	687b      	ldr	r3, [r7, #4]
+ 8001032:	2b00      	cmp	r3, #0
+ 8001034:	d1d4      	bne.n	8000fe0 <SPI_ReceiveData+0xe>
 		}
 	}
 }
- 800105c:	bf00      	nop
- 800105e:	bf00      	nop
- 8001060:	3710      	adds	r7, #16
- 8001062:	46bd      	mov	sp, r7
- 8001064:	bd80      	pop	{r7, pc}
+ 8001036:	bf00      	nop
+ 8001038:	bf00      	nop
+ 800103a:	3710      	adds	r7, #16
+ 800103c:	46bd      	mov	sp, r7
+ 800103e:	bd80      	pop	{r7, pc}
 
-08001066 <SPI_PeripheralControl>:
+08001040 <SPI_PeripheralControl>:
 *
 * @note			- none
 *
 ********************************************************************************/
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 {
- 8001066:	b480      	push	{r7}
- 8001068:	b083      	sub	sp, #12
- 800106a:	af00      	add	r7, sp, #0
- 800106c:	6078      	str	r0, [r7, #4]
- 800106e:	460b      	mov	r3, r1
- 8001070:	70fb      	strb	r3, [r7, #3]
+ 8001040:	b480      	push	{r7}
+ 8001042:	b083      	sub	sp, #12
+ 8001044:	af00      	add	r7, sp, #0
+ 8001046:	6078      	str	r0, [r7, #4]
+ 8001048:	460b      	mov	r3, r1
+ 800104a:	70fb      	strb	r3, [r7, #3]
 	if(EnorDi == ENABLE)
- 8001072:	78fb      	ldrb	r3, [r7, #3]
- 8001074:	2b01      	cmp	r3, #1
- 8001076:	d106      	bne.n	8001086 <SPI_PeripheralControl+0x20>
+ 800104c:	78fb      	ldrb	r3, [r7, #3]
+ 800104e:	2b01      	cmp	r3, #1
+ 8001050:	d106      	bne.n	8001060 <SPI_PeripheralControl+0x20>
 		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
- 8001078:	687b      	ldr	r3, [r7, #4]
- 800107a:	681b      	ldr	r3, [r3, #0]
- 800107c:	f043 0240 	orr.w	r2, r3, #64	@ 0x40
- 8001080:	687b      	ldr	r3, [r7, #4]
- 8001082:	601a      	str	r2, [r3, #0]
+ 8001052:	687b      	ldr	r3, [r7, #4]
+ 8001054:	681b      	ldr	r3, [r3, #0]
+ 8001056:	f043 0240 	orr.w	r2, r3, #64	@ 0x40
+ 800105a:	687b      	ldr	r3, [r7, #4]
+ 800105c:	601a      	str	r2, [r3, #0]
 	else
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
 }
- 8001084:	e005      	b.n	8001092 <SPI_PeripheralControl+0x2c>
+ 800105e:	e005      	b.n	800106c <SPI_PeripheralControl+0x2c>
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
- 8001086:	687b      	ldr	r3, [r7, #4]
- 8001088:	681b      	ldr	r3, [r3, #0]
- 800108a:	f023 0240 	bic.w	r2, r3, #64	@ 0x40
- 800108e:	687b      	ldr	r3, [r7, #4]
- 8001090:	601a      	str	r2, [r3, #0]
+ 8001060:	687b      	ldr	r3, [r7, #4]
+ 8001062:	681b      	ldr	r3, [r3, #0]
+ 8001064:	f023 0240 	bic.w	r2, r3, #64	@ 0x40
+ 8001068:	687b      	ldr	r3, [r7, #4]
+ 800106a:	601a      	str	r2, [r3, #0]
 }
- 8001092:	bf00      	nop
- 8001094:	370c      	adds	r7, #12
- 8001096:	46bd      	mov	sp, r7
- 8001098:	bc80      	pop	{r7}
- 800109a:	4770      	bx	lr
+ 800106c:	bf00      	nop
+ 800106e:	370c      	adds	r7, #12
+ 8001070:	46bd      	mov	sp, r7
+ 8001072:	bc80      	pop	{r7}
+ 8001074:	4770      	bx	lr
 
-0800109c <SPI_SSOEConfig>:
+08001076 <SPI_SSOEConfig>:
 *
 * @note			- none
 *
 ********************************************************************************/
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 {
- 800109c:	b480      	push	{r7}
- 800109e:	b083      	sub	sp, #12
- 80010a0:	af00      	add	r7, sp, #0
- 80010a2:	6078      	str	r0, [r7, #4]
- 80010a4:	460b      	mov	r3, r1
- 80010a6:	70fb      	strb	r3, [r7, #3]
+ 8001076:	b480      	push	{r7}
+ 8001078:	b083      	sub	sp, #12
+ 800107a:	af00      	add	r7, sp, #0
+ 800107c:	6078      	str	r0, [r7, #4]
+ 800107e:	460b      	mov	r3, r1
+ 8001080:	70fb      	strb	r3, [r7, #3]
 	if(EnorDi == ENABLE)
- 80010a8:	78fb      	ldrb	r3, [r7, #3]
- 80010aa:	2b01      	cmp	r3, #1
- 80010ac:	d106      	bne.n	80010bc <SPI_SSOEConfig+0x20>
+ 8001082:	78fb      	ldrb	r3, [r7, #3]
+ 8001084:	2b01      	cmp	r3, #1
+ 8001086:	d106      	bne.n	8001096 <SPI_SSOEConfig+0x20>
 		pSPIx->CR2 |= (1 << SPI_CR2_SSOE);
- 80010ae:	687b      	ldr	r3, [r7, #4]
- 80010b0:	685b      	ldr	r3, [r3, #4]
- 80010b2:	f043 0204 	orr.w	r2, r3, #4
- 80010b6:	687b      	ldr	r3, [r7, #4]
- 80010b8:	605a      	str	r2, [r3, #4]
+ 8001088:	687b      	ldr	r3, [r7, #4]
+ 800108a:	685b      	ldr	r3, [r3, #4]
+ 800108c:	f043 0204 	orr.w	r2, r3, #4
+ 8001090:	687b      	ldr	r3, [r7, #4]
+ 8001092:	605a      	str	r2, [r3, #4]
 	else
 		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
 }
- 80010ba:	e005      	b.n	80010c8 <SPI_SSOEConfig+0x2c>
+ 8001094:	e005      	b.n	80010a2 <SPI_SSOEConfig+0x2c>
 		pSPIx->CR2 &= ~(1 << SPI_CR2_SSOE);
- 80010bc:	687b      	ldr	r3, [r7, #4]
- 80010be:	685b      	ldr	r3, [r3, #4]
- 80010c0:	f023 0204 	bic.w	r2, r3, #4
- 80010c4:	687b      	ldr	r3, [r7, #4]
- 80010c6:	605a      	str	r2, [r3, #4]
+ 8001096:	687b      	ldr	r3, [r7, #4]
+ 8001098:	685b      	ldr	r3, [r3, #4]
+ 800109a:	f023 0204 	bic.w	r2, r3, #4
+ 800109e:	687b      	ldr	r3, [r7, #4]
+ 80010a0:	605a      	str	r2, [r3, #4]
 }
- 80010c8:	bf00      	nop
+ 80010a2:	bf00      	nop
+ 80010a4:	370c      	adds	r7, #12
+ 80010a6:	46bd      	mov	sp, r7
+ 80010a8:	bc80      	pop	{r7}
+ 80010aa:	4770      	bx	lr
+
+080010ac <SPI_GetFlagStatus>:
+
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t flagName)
+{
+ 80010ac:	b480      	push	{r7}
+ 80010ae:	b083      	sub	sp, #12
+ 80010b0:	af00      	add	r7, sp, #0
+ 80010b2:	6078      	str	r0, [r7, #4]
+ 80010b4:	6039      	str	r1, [r7, #0]
+	if(pSPIx->SR & flagName)
+ 80010b6:	687b      	ldr	r3, [r7, #4]
+ 80010b8:	689a      	ldr	r2, [r3, #8]
+ 80010ba:	683b      	ldr	r3, [r7, #0]
+ 80010bc:	4013      	ands	r3, r2
+ 80010be:	2b00      	cmp	r3, #0
+ 80010c0:	d001      	beq.n	80010c6 <SPI_GetFlagStatus+0x1a>
+	{
+		return FLAG_SET;
+ 80010c2:	2301      	movs	r3, #1
+ 80010c4:	e000      	b.n	80010c8 <SPI_GetFlagStatus+0x1c>
+	}
+
+	return FLAG_RESET;
+ 80010c6:	2300      	movs	r3, #0
+}
+ 80010c8:	4618      	mov	r0, r3
  80010ca:	370c      	adds	r7, #12
  80010cc:	46bd      	mov	sp, r7
  80010ce:	bc80      	pop	{r7}
