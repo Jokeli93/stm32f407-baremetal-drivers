@@ -468,9 +468,9 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 ********************************************************************************/
 void GPIO_IRQHandling(uint8_t pinNumber) // Function to process interrupts
 {
-	//clear the exti pending register (PR) corresponding  to the pin number
+	//clear the exti pending register (PR) corresponding to the pin number
 	if(EXTI->PR & (1 << pinNumber))
 	{
-		EXTI->PR |= (1 << pinNumber);  //clearing the PR
+		EXTI->PR |= (1 << pinNumber);  //clearing the PR by programming it to '1'
 	}
 }

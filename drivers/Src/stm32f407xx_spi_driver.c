@@ -16,7 +16,7 @@ static void spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle);
 /*******************************************************************************
 * @fn			- GPIO_PeriClockControl
 *
-* @brief		- This function enables or disables peripheral clock for the given GPIO port
+* @brief		- This function enables or disables peripheral clock for SPI
 *
 *  @param[in]	- base address of the gpio peripheral
 *  @param[in]	- ENABLE or DISABLE macros
@@ -299,7 +299,7 @@ uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t le
 
 		//2. Mark the SPI state as busy in transmission so that no oder code can take over same
 		//   SPI peripheral until transmission is over
-		pSPIHandle->TxState= SPI_BUSY_IN_TX;
+		pSPIHandle->TxState = SPI_BUSY_IN_TX;
 
 		//3. Enable TXEIE control bit to get interrupt whenever TXE flag is set in SR
 		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE);
@@ -345,7 +345,7 @@ uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t
 
 	}
 
-	//4. Data transmission will be handle by the ISR code (to implement later)
+	//4. Data reception will be handle by the ISR code (to implement later)
 
 	return state;
 
