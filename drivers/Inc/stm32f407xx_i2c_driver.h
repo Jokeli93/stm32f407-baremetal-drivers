@@ -31,8 +31,8 @@ typedef struct
 
 //@I2C_SCLSpeed
 #define I2C_SCL_SPEED_SM		100000 //Simple Mode
-#define I2C_CLK_SPEED_FM2K		200000 //Fast Mode 200KHz
-#define I2C_CLK_SPEED_FM4K		400000 //Fast Mode 400KHz
+#define I2C_SCL_SPEED_FM2K		200000 //Fast Mode 200KHz
+#define I2C_SCL_SPEED_FM4K		400000 //Fast Mode 400KHz
 
 //@I2C_ACKControl
 #define I2C_ACK_ENABLE		1
@@ -67,7 +67,8 @@ void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority); // Function
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 //return the flag status of the Status Register
-uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t flagName);
+uint8_t I2C_GetFlagStatusSR1(I2C_RegDef_t *pI2Cx, uint32_t flagName);
+uint8_t I2C_GetFlagStatusSR2(I2C_RegDef_t *pI2Cx, uint32_t flagName);
 
 
 //Application callback
