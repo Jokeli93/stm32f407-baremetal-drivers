@@ -58,7 +58,7 @@ typedef struct
 
 //@SPI_BusConfig
 
-#define SPI_BUS_CONFIG_FD				1 //Bus configuration as full duplex
+#define  SPI_BUS_CONFIG_FD				1 //Bus configuration as full duplex
 #define SPI_BUS_CONFIG_HD				2 //Bus configuration as half duplex
 #define SPI_BUS_CONFIG_SIMPLEX_RXONLY	3 //Bus configuration as simplex receiver only
 
