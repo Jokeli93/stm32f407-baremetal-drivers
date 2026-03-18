@@ -376,8 +376,8 @@ typedef struct
 #define IRQ_NO_I2C1_ER		32
 #define IRQ_NO_I2C2_EV		33
 #define IRQ_NO_I2C2_ER		34
-#define IRQ_NO_I2C2_EV		72
-#define IRQ_NO_I2C2_ER		73
+#define IRQ_NO_I2C3_EV		72
+#define IRQ_NO_I2C3_ER		73
 
 //macros IRQ priority levels of STM32F407x MCU
 
@@ -494,8 +494,8 @@ typedef struct
 #define I2C_SR1_BTF				2
 #define I2C_SR1_ADD10			3
 #define I2C_SR1_STOPF			4
-#define I2C_SR1_RxNE			6
-#define I2C_SR1_TxE				7
+#define I2C_SR1_RXNE			6
+#define I2C_SR1_TXE				7
 #define I2C_SR1_BERR			8
 #define I2C_SR1_ARLO			9
 #define I2C_SR1_AF				10
