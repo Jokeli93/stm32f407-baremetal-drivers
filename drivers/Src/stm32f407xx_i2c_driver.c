@@ -142,8 +142,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 {
 	uint32_t tempReg =0;
 
-	//enable the peripheral clock
-
+	//enable the clock for the I2Cx peripheral
 	I2C_PeriClockControl(pI2CHandle->pI2Cx, ENABLE);
 
 	//1. Configure the ACK control bit
