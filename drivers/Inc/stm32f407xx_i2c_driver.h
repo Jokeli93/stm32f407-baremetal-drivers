@@ -17,7 +17,7 @@ typedef struct
 {
 	uint32_t I2C_SCLSpeed; //Clock speed
 	uint8_t  I2C_DeviceAddress; //Device address for Slave devices
-	uint8_t  I2C_ACKControl; //ACK or NACK
+	uint8_t  I2C_ACKControl; //ACK or NACK to enable or disable
 	uint16_t I2C_FMDutyDycle; //Duty cycle
 }I2C_Config_t;
 
@@ -72,6 +72,9 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 //Data send and receive
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr);
 
+//Data reception API
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr);
+
 //IRQ configuration and ISR handling
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi); // used to configure the IRQ number of the I2C
 void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority); // Function to configure the IRQ priority
@@ -83,7 +86,9 @@ void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 //return the flag status of the Status Register
 uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t flagName);
-//uint8_t I2C_GetFlagStatusSR2(I2C_RegDef_t *pI2Cx, uint32_t flagName);
+
+//Enables /disables the ACK
+void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 
 //Application callback

@@ -29,25 +29,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  12 .ARM.attributes 0000002a  00000000  00000000  00002040  2**0
                   CONTENTS, READONLY
- 13 .debug_info   000012b3  00000000  00000000  0000206a  2**0
+ 13 .debug_info   00001389  00000000  00000000  0000206a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 000004dc  00000000  00000000  0000331d  2**0
+ 14 .debug_abbrev 00000522  00000000  00000000  000033f3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000160  00000000  00000000  00003800  2**3
+ 15 .debug_aranges 00000178  00000000  00000000  00003918  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 000000fe  00000000  00000000  00003960  2**0
+ 16 .debug_rnglists 00000111  00000000  00000000  00003a90  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  0000286a  00000000  00000000  00003a5e  2**0
+ 17 .debug_macro  0000286a  00000000  00000000  00003ba1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00001c8f  00000000  00000000  000062c8  2**0
+ 18 .debug_line   00001d7a  00000000  00000000  0000640b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    0000a704  00000000  00000000  00007f57  2**0
+ 19 .debug_str    0000a74c  00000000  00000000  00008185  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  0001265b  2**0
+ 20 .comment      00000043  00000000  00000000  000128d1  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  000004a0  00000000  00000000  000126a0  2**2
+ 21 .debug_frame  0000050c  00000000  00000000  00012914  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 000000c9  00000000  00000000  00012b40  2**0
+ 22 .debug_line_str 000000c9  00000000  00000000  00012e20  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1221,7 +1221,7 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber)
  80008a8:	4770      	bx	lr
 
 080008aa <RCC_GetPLLOutputClock>:
-static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr);
+static void I2C_ExecuteAddressPhaseRead(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr);
 static void I2C_ClearAddrFlag(I2C_RegDef_t *pI2Cx);
 static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 
@@ -1748,13 +1748,13 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t l
  8000ba6:	d0f6      	beq.n	8000b96 <I2C_MasterSendData+0x1a>
 
 	//3. Send the address of the slave with r/nw bit set to w(0) (total 8 bits )
-	I2C_ExecuteAddressPhase(pI2CHandle->pI2Cx, slaveAddr);
+	I2C_ExecuteAddressPhaseWrite(pI2CHandle->pI2Cx, slaveAddr);
  8000ba8:	68fb      	ldr	r3, [r7, #12]
  8000baa:	681b      	ldr	r3, [r3, #0]
  8000bac:	78fa      	ldrb	r2, [r7, #3]
  8000bae:	4611      	mov	r1, r2
  8000bb0:	4618      	mov	r0, r3
- 8000bb2:	f000 f882 	bl	8000cba <I2C_ExecuteAddressPhase>
+ 8000bb2:	f000 f882 	bl	8000cba <I2C_ExecuteAddressPhaseWrite>
 
 	//4. Confirm that address phase is completed by checking the ADDR flag in teh SR1
 	while(! I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_ADDR));
@@ -1941,9 +1941,9 @@ uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t flagName)
  8000cb6:	bc80      	pop	{r7}
  8000cb8:	4770      	bx	lr
 
-08000cba <I2C_ExecuteAddressPhase>:
+08000cba <I2C_ExecuteAddressPhaseWrite>:
 
-static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr)
+static void I2C_ExecuteAddressPhaseWrite(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr)
 {
  8000cba:	b480      	push	{r7}
  8000cbc:	b083      	sub	sp, #12
@@ -1971,6 +1971,9 @@ static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr)
  8000ce2:	4770      	bx	lr
 
 08000ce4 <I2C_ClearAddrFlag>:
+	slaveAddr |= (1); //set the first bit (LSB) for reading
+	pI2Cx->DR = slaveAddr;
+}
 
 static void I2C_ClearAddrFlag(I2C_RegDef_t *pI2Cx)
 {
