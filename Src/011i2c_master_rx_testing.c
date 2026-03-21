@@ -1,24 +1,24 @@
 /*
- * 010i2c_master_tx_testing.c
+ * 011i2c_master_rx_testing.c
  *
- *  Created on: 18.03.2026
+ *  Created on: 21.03.2026
  *      Author: Joelikane
  */
 
-
 /*
+ * I2C Master (STM32F407xx) and I2C Slave (Arduino) communication.
  *
- * I2C Master (STM32F407xx) and I2C Slave (Arduino) communication
+ * When button on the master is pressed, master should read and display data from Arduino slave connected.
+ * First master has to get the length of the data from the slave to read subsequent data from the slave.
  *
- * When button on the STM32 board (master) is pressed, master should send data on the
- * Arduion board (slave). The data received by the Arduino board will be displayed on
- * the serial monitor of the Arduino IDE.
+ * 1. Use I2C SCL = 100KHz (standard mode)
+ * 2: Use 2 pull-up resistors (of value 3.3KOhm or 4.7KOhm) or internal pull up resistors for SDA and SCL
+ *  lines
  *
- * 1. Use I2C_SCL = 100kHz (Standart mode)
- * 2. Use external pull up resistors (3.3 KOhm) for SDA and SCL line
+ *Procedure to read the data from the slave
  *
- * Note: If external pull up resistors are not available, simply activate the STM32 I2C
- *       pin's internal pull up resistors.
+ *1. Master sends command code 0x51 to read the length (1 byte) of the data from the slave
+ *2. Master send command 0x52 to read the complete data from the slave
  */
 
 
@@ -26,6 +26,9 @@
 #include<string.h>
 #include "stm32f407xx.h"
 
+#define MY_ADDR			0x61
+
+#define SLAVE_ADDR		0x68
 
 void delay(void)
 {
@@ -34,18 +37,8 @@ void delay(void)
 
 I2C_Handle_t I2C1Handle;
 
-#define MY_ADDR			0x61
-
-#define SLAVE_ADDR		0x68
-
-/*
- * Some  data to send
- *
- * Note: The Arduino sketch is written using Arduino wWire library. The Wire library has limitation on how
- *       many bytes can be transferd or received in single I2C transaction and the limit is 32 bytes.
- *       So, don't send/receive more than 32 bytes in single I2C transaction.
- */
-uint8_t sample_data[]= "We are testing I2C master Tx\n";
+//rcv buffer
+uint8_t rcv_buffer[32];
 
 
 /*
@@ -104,6 +97,7 @@ void GPIO_ButtonInit(void)
 
 int main (void)
 {
+	uint8_t commandCode, data_len;
 
 	//Button init
 	GPIO_ButtonInit();
@@ -114,8 +108,11 @@ int main (void)
 	//I2C peripheral configuration
 	I2C1_Inits();
 
-	//enables  the I2C peripheral
+	//enables  the I2C peripheral (set PE)
 	I2C_PeripheralControl(I2C1, ENABLE);
+
+	//ACK bit is set only after PE is set, otherwise it is clear by the hardware
+	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
 
 	while(1)
 	{
@@ -125,8 +122,21 @@ int main (void)
 		//to avoid button de-bouncing related issues: 200mms of delay
 		delay();
 
-		//send the data
-		I2C_MasterSendData(&I2C1Handle, sample_data, strlen((char*)sample_data), SLAVE_ADDR);
+		commandCode = 0x51;
+
+		//command 0x51 sent from master to slave to read the length of the data
+		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR);
+
+		//reception of the length of data to be send
+		I2C_MasterReceiveData(&I2C1Handle, &data_len, 1, SLAVE_ADDR);
+
+		commandCode = 0x52;
+
+		//command 0x52 sent from master to slave to read the data
+		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR);
+
+		//reception of the whole data
+		I2C_MasterReceiveData(&I2C1Handle, rcv_buffer, data_len, SLAVE_ADDR);
 
 	}
 }
