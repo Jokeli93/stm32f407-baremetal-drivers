@@ -125,18 +125,18 @@ int main (void)
 		commandCode = 0x51;
 
 		//command 0x51 sent from master to slave to read the length of the data
-		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR);
+		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR, I2C_ENABLE_SR);
 
 		//reception of the length of data to be send
-		I2C_MasterReceiveData(&I2C1Handle, &data_len, 1, SLAVE_ADDR);
+		I2C_MasterReceiveData(&I2C1Handle, &data_len, 1, SLAVE_ADDR, I2C_ENABLE_SR);
 
 		commandCode = 0x52;
 
 		//command 0x52 sent from master to slave to read the data
-		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR);
+		I2C_MasterSendData(&I2C1Handle, &commandCode, 1, SLAVE_ADDR, I2C_ENABLE_SR);
 
 		//reception of the whole data
-		I2C_MasterReceiveData(&I2C1Handle, rcv_buffer, data_len, SLAVE_ADDR);
+		I2C_MasterReceiveData(&I2C1Handle, rcv_buffer, data_len, SLAVE_ADDR, I2C_DISABLE_SR);
 
 	}
 }

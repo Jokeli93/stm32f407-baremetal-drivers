@@ -57,6 +57,10 @@ typedef struct
 #define I2C_FLAG_TIMEOUT		(1 << I2C_SR1_TIMEOUT)
 #define I2C_FLAG_SMBALERT		(1 << I2C_SR1_SMBALERT)
 
+//I2C macros for enabling/disabling the repeated satrt
+#define I2C_ENABLE_SR		SET
+#define I2C_DISABLE_SR		RESET
+
 /**********************************************************************************
  *							APIs supported by this driver
  *		For more information about the APIs check the function definitions
@@ -70,10 +74,10 @@ void I2C_Init(I2C_Handle_t *pI2CHandle);
 void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 
 //Data send and receive
-void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr);
+void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
 
 //Data reception API
-void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr);
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
 
 //IRQ configuration and ISR handling
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi); // used to configure the IRQ number of the I2C
