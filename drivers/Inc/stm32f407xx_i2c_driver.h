@@ -25,9 +25,23 @@ typedef struct
 
 typedef struct
 {
-	I2C_RegDef_t * pI2Cx;
-	I2C_Config_t I2C_Config;
+	I2C_RegDef_t	*pI2Cx;
+	I2C_Config_t	I2C_Config;
+	uint8_t 		*pTxBuffer; //To store the app. Tx buffer address
+	uint8_t 		*pRxBuffer; //To store the app. Rx buffer address
+	uint32_t 		TxLen; 		//To store the Tx len
+	uint32_t 		RxLen; 		//To store the Rx len
+	uint8_t 		TxRxState; 	//To store communication state
+	uint8_t 		devAddr; 	//To store slave/device address
+	uint32_t 		RxSize; 	//To store Rx size
+	uint8_t 		Sr; 		//To store repeated start value
+
 }I2C_Handle_t;
+
+//I2C application state
+#define I2C_READY			0
+#define I2C_BUSY_IN_RX		1
+#define I2C_BUSY_IN_TX		2
 
 //@I2C_SCLSpeed
 #define I2C_SCL_SPEED_SM		100000 //Simple Mode
@@ -61,6 +75,11 @@ typedef struct
 #define I2C_ENABLE_SR		SET
 #define I2C_DISABLE_SR		RESET
 
+//I2C application events macros
+#define I2C_EV_TX_CMPLT		0
+#define I2C_EV_RX_CMPLT		1
+#define I2C_EV_STOP			2
+
 /**********************************************************************************
  *							APIs supported by this driver
  *		For more information about the APIs check the function definitions
@@ -73,16 +92,22 @@ void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 void I2C_Init(I2C_Handle_t *pI2CHandle);
 void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 
-//Data send and receive
+//Master send and receive data APIs (polling based)
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
-
-//Data reception API
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
+
+//Master send and receive data APIs (interrupt based)
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
+
+void I2C_CloseSendData(I2C_Handle_t *pI2CHandle);
+void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle);
 
 //IRQ configuration and ISR handling
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi); // used to configure the IRQ number of the I2C
 void I2C_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority); // Function to configure the IRQ priority
-
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);
 
 
 // enables or disables the I2C peripheral

@@ -449,7 +449,7 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint32_t IRQPriority)
 ********************************************************************************/
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle)
 {
-	uint8_t temp1, temp2;
+	uint32_t temp1, temp2;
 
 	//first lets check for TXE
 	temp1 = pSPIHandle->pSPIx->SR & (1 << SPI_SR_TXE);
