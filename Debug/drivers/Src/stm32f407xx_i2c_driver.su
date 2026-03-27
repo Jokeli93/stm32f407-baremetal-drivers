@@ -21,5 +21,5 @@
 ../drivers/Src/stm32f407xx_i2c_driver.c:888:13:I2C_ExecuteAddressPhaseWrite	16	static
 ../drivers/Src/stm32f407xx_i2c_driver.c:895:13:I2C_ExecuteAddressPhaseRead	16	static
 ../drivers/Src/stm32f407xx_i2c_driver.c:902:13:I2C_ClearAddrFlag	24	static
-../drivers/Src/stm32f407xx_i2c_driver.c:942:13:I2C_GenerateStopCondition	16	static
+../drivers/Src/stm32f407xx_i2c_driver.c:942:6:I2C_GenerateStopCondition	16	static
 ../drivers/Src/stm32f407xx_i2c_driver.c:948:6:I2C_ManageAcking	16	static
