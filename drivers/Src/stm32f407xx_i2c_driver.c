@@ -645,19 +645,21 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 			{
 				//BTF, TXE = 1
 
-				//if()
-
-				//1. generate the STOP condition
-				if(pI2CHandle->Sr == I2C_DISABLE_SR)
+				if(pI2CHandle->TxLen == 0)
 				{
-					I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+
+					//1. generate the STOP condition
+					if(pI2CHandle->Sr == I2C_DISABLE_SR)
+					{
+						I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+					}
+
+					//2. reset all the member elements of the handle structure.
+					I2C_CloseSendData(pI2CHandle);
+
+					//3. notify the application about transmission complete
+					I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_TX_CMPLT);
 				}
-
-				//2. reset all the member elements of the handle structure.
-				I2C_CloseSendData(pI2CHandle);
-
-				//3. notify the application about transmission complete
-				I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_TX_CMPLT);
 			}
 		}
 		else if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
@@ -722,6 +724,95 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 
 }
 
+/*********************************************************************
+ * @fn      		  - I2C_ER_IRQHandling
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              - macros to define in the driver
+						header file
+						#define I2C_ERROR_BERR  3
+						#define I2C_ERROR_ARLO  4
+						#define I2C_ERROR_AF    5
+						#define I2C_ERROR_OVR   6
+						#define I2C_ERROR_TIMEOUT 7
+ */
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
+{
+
+	uint32_t temp1, temp2;
+
+    //check the ITERREN bit in the CR2
+	temp2 = (pI2CHandle->pI2Cx->CR2) & ( 1 << I2C_CR2_ITERREN);
+
+
+/***********************Check for Bus error************************************/
+	temp1 = (pI2CHandle->pI2Cx->SR1) & ( 1 << I2C_SR1_BERR);
+	if(temp1  && temp2 )
+	{
+		//clear the buss error flag
+		pI2CHandle->pI2Cx->SR1 &= ~( 1 << I2C_SR1_BERR);
+
+		//notify the application about the error
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_BERR);
+	}
+
+/***********************Check for arbitration lost error************************************/
+	temp1 = (pI2CHandle->pI2Cx->SR1) & ( 1 << I2C_SR1_ARLO );
+	if(temp1  && temp2)
+	{
+		//clear the arbitration lost error flag
+		pI2CHandle->pI2Cx->SR1 &= ~( 1 << I2C_SR1_ARLO);
+
+		//notify the application about the error
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_ARLO);
+
+	}
+
+/***********************Check for ACK failure  error************************************/
+
+	temp1 = (pI2CHandle->pI2Cx->SR1) & ( 1 << I2C_SR1_AF);
+	if(temp1  && temp2)
+	{
+	    //clear the ACK failure error flag
+		pI2CHandle->pI2Cx->SR1 &= ~( 1 << I2C_SR1_AF);
+
+		//notify the application about the error
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_AF);
+	}
+
+/***********************Check for Overrun/underrun error************************************/
+	temp1 = (pI2CHandle->pI2Cx->SR1) & ( 1 << I2C_SR1_OVR);
+	if(temp1  && temp2)
+	{
+	    //clear the Overrun/underrun error flag
+		pI2CHandle->pI2Cx->SR1 &= ~( 1 << I2C_SR1_OVR);
+
+		//notify the application about the error
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_OVR);
+	}
+
+/***********************Check for Time out error************************************/
+	temp1 = (pI2CHandle->pI2Cx->SR1) & ( 1 << I2C_SR1_TIMEOUT);
+	if(temp1  && temp2)
+	{
+	    //clear the Time out error flag
+		pI2CHandle->pI2Cx->SR1 &= ~( 1 << I2C_SR1_TIMEOUT);
+
+		//notify the application about the error
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_TIMEOUT);
+	}
+
+}
+
+
+
 void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
 {
 	//Disable the ITBUFEN control bit
@@ -757,10 +848,6 @@ void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
 
 }
 
-void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
-{
-
-}
 
 /*******************************************************************************
 * @fn		I2C_PeripheralControl
