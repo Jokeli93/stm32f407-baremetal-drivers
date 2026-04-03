@@ -700,6 +700,16 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 				I2C_MasterHandleTXEInterrupt(pI2CHandle);
 			}
 		}
+		else
+		{
+			//device is in slave mode
+
+			//check that the slave device is really in transmission mode (TRA = 1)
+			if(pI2CHandle->pI2Cx->SR2 & (1 << I2C_SR2_TRA))
+			{
+				I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_DATA_REQ); //send the data
+			}
+		}
 	}
 
 	temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_RXNE);
@@ -717,6 +727,16 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 			if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
 			{
 				I2C_MasterHandleRXNEInterrupt(pI2CHandle);
+			}
+		}
+		else
+		{
+			//device is in slave mode
+
+			//check that the slave device is really in receiver mode (TRA =0)
+			if(!(pI2CHandle->pI2Cx->SR2 & (1 << I2C_SR2_TRA)))
+			{
+				I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_DATA_RCV); //receive the data
 			}
 		}
 	}
@@ -846,6 +866,16 @@ void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle)
 	if(pI2CHandle->I2C_Config.I2C_ACKControl == I2C_ACK_ENABLE)
 		I2C_ManageAcking(pI2CHandle->pI2Cx, ENABLE);
 
+}
+
+void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t data)
+{
+	pI2Cx->DR = data;
+}
+
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx)
+{
+	return (uint8_t)pI2Cx->DR;
 }
 
 

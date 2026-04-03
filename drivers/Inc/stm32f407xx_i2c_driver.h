@@ -75,17 +75,17 @@ typedef struct
 #define I2C_ENABLE_SR		SET
 #define I2C_DISABLE_SR		RESET
 
-//I2C application events macros
+//I2C application events/errors macros
 #define I2C_EV_TX_CMPLT		0
 #define I2C_EV_RX_CMPLT		1
 #define I2C_EV_STOP			2
-
-//I2C application errors macros
 #define I2C_ERROR_BERR  	3
 #define I2C_ERROR_ARLO  	4
 #define I2C_ERROR_AF    	5
 #define I2C_ERROR_OVR   	6
 #define I2C_ERROR_TIMEOUT	7
+#define I2C_EV_DATA_REQ		8
+#define I2C_EV_DATA_RCV		9
 
 /**********************************************************************************
  *							APIs supported by this driver
@@ -102,6 +102,10 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 //Master send and receive data APIs (polling based)
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
+
+//Slave send and receive data
+void I2C_SlaveSendData(I2C_RegDef_t *pI2Cx, uint8_t data);
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx);
 
 //Master send and receive data APIs (interrupt based)
 uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t slaveAddr, uint8_t Sr);
