@@ -1,38 +1,36 @@
 /*
- * 012i2c_master_rx_testingIT.c
+ * 013i2c_slave_tx_string.c
  *
- *  Created on: 27.03.2026
+ *  Created on: 04.04.2026
  *      Author: Joelikane
  */
 
 
 /*
- * I2C Master (STM32F407xx) and I2C Slave (Arduino) communication in Interrupt mode.
+ * I2C Master (Arduino) and I2C Slave (STM32F407xx) communication in Interrupt mode.
  *
- * When button on the master is pressed, master should read and display data from Arduino slave connected.
- * First master has to get the length of the data from the slave to read subsequent data from the slave.
+ *Master should read and display data from STM32 slave connected. First master has to get
+ *the length of the data from the slave to read subsequent data from the slave.
  *
- * 1. Use I2C SCL = 100KHz (standard mode)
- * 2: Use 2 pull-up resistors (of value 3.3KOhm or 4.7KOhm) or internal pull up resistors for SDA and SCL
- *    lines
- *
+ *1. Use I2C SCL = 100KHz(Standard mode)
+ *2. Use internal pull up resistors for SDA and SCL lines
+
  *Procedure to read the data from the slave
  *
- *1. Master sends command code 0x51 to read the length (1 byte) of the data from the slave
+ *1. Master(Arduino) sends command code 0x51 to read the length (1 byte) of the data from the slave(STM32)
  *2. Master send command 0x52 to read the complete data from the slave
- */
+*/
+
 
 
 #include<stdio.h>
 #include<string.h>
 #include "stm32f407xx.h"
 
-//Flag variable
-uint8_t rxComplt = RESET;
 
-#define MY_ADDR			0x61
+#define SLAVE_ADDR		0x68 // Used SLAVE_ADDR = 0x63 as example to observe the ACK failure
 
-#define SLAVE_ADDR		0x68 // Used SLAVE_ADDR = 0x61 as example to observe the ACK failure
+#define MY_ADDR			SLAVE_ADDR
 
 void delay(void)
 {
@@ -42,7 +40,7 @@ void delay(void)
 I2C_Handle_t I2C1Handle;
 
 //rcv buffer
-uint8_t rcv_buffer[32];
+uint8_t Tx_buffer[32] = "STM32 Slave mode testing...";
 
 
 /*
@@ -101,8 +99,6 @@ void GPIO_ButtonInit(void)
 
 int main (void)
 {
-	uint8_t commandCode, data_len;
-
 	//Button init
 	GPIO_ButtonInit();
 
@@ -116,48 +112,16 @@ int main (void)
 	I2C_IRQInterruptConfig(IRQ_NO_I2C1_EV, ENABLE);
 	I2C_IRQInterruptConfig(IRQ_NO_I2C1_ER, ENABLE);
 
+	I2C_SlaveEnableDisableCallbackEvents(I2C1, ENABLE);
+
 	//enables  the I2C peripheral (set PE)
 	I2C_PeripheralControl(I2C1, ENABLE);
 
 	//ACK bit is set only after PE is set, otherwise it is cleared by the hardware
 	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
 
-	while(1)
-	{
-		//wait till button is pressed
-		while( ! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0) );
+	while(1);
 
-		//to avoid button de-bouncing related issues: 200mms of delay
-		delay();
-
-		commandCode = 0x51;
-
-		//command 0x51 sent from master to slave to read the length of the data
-		while(I2C_MasterSendDataIT(&I2C1Handle, &commandCode, 1, SLAVE_ADDR, I2C_ENABLE_SR) != I2C_READY);
-
-		//reception of the length of data to be send
-		while(I2C_MasterReceiveDataIT(&I2C1Handle, &data_len, 1, SLAVE_ADDR, I2C_ENABLE_SR) != I2C_READY);
-
-
-		commandCode = 0x52;
-
-		//command 0x52 sent from master to slave to read the data
-		while(I2C_MasterSendDataIT(&I2C1Handle, &commandCode, 1, SLAVE_ADDR, I2C_ENABLE_SR) != I2C_READY);
-
-		//reception of the whole data
-		while(I2C_MasterReceiveDataIT(&I2C1Handle, rcv_buffer, data_len, SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
-
-		rxComplt = RESET;
-
-		//wait until reception completes
-		while(rxComplt != SET);
-
-		rcv_buffer[data_len +1] = '\0';
-
-		printf("Data: %s", rcv_buffer);
-
-		rxComplt = RESET;
-	}
 }
 
 void I2C1_EV_IRQHandler(void)
@@ -172,26 +136,38 @@ void I2C1_ER_IRQHandler(void)
 
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEvt)
 {
-	if(AppEvt == I2C_EV_TX_CMPLT)
+	static uint8_t commandCode = 0;
+	static uint8_t cnt = 0;
+
+	if(AppEvt == I2C_EV_DATA_REQ)
 	{
-		printf("Tx is complete\n");
+		//Master wants some data from the slave
+		if(commandCode == 0x51)
+		{
+			//send the length information to the master
+			I2C_SlaveSendData(pI2CHandle->pI2Cx, strlen((char*)Tx_buffer));
+		}
+		else if(commandCode == 0x52)
+		{
+			//send the content of the data (@Tx_buffer)
+			I2C_SlaveSendData(pI2CHandle->pI2Cx, Tx_buffer[cnt++]);
+		}
 	}
-	else if(AppEvt == I2C_EV_RX_CMPLT)
+	else if(AppEvt == I2C_EV_DATA_RCV)
 	{
-		printf("Rx is completed\n");
-
-		rxComplt = SET;
+		//Data is waiting for the slave to read
+		commandCode = I2C_SlaveReceiveData(pI2CHandle->pI2Cx);
 	}
-	if(AppEvt == I2C_ERROR_AF)
+	else if(AppEvt == I2C_ERROR_AF)
 	{
-		printf("Error: Ack failure\n");
-		//in master, ACK failure happens when slave fails to send ACK for the byte sent from master.
-		I2C_CloseSendData(pI2CHandle);
-
-		//generate the stop condition
-		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
-
-		//Hang in infinite loop
-		while(1);
+		//this happens only during slave transmission
+		//Master sends the NACK and slave understands that the master doesn't need more data.
+		commandCode = 0xff;
+		cnt = 0;
+	}
+	else if(AppEvt == I2C_EV_STOP)
+	{
+		//this happens only during slave reception
+		//Master ends the I2C communication with the slave
 	}
 }

@@ -160,6 +160,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 	pI2CHandle->pI2Cx->CR2 = (tempReg & 0x3F);
 
 	//2. Programm the device own address
+	tempReg = 0;
 	tempReg |= pI2CHandle->I2C_Config.I2C_DeviceAddress << I2C_OAR1_ADD;
 	tempReg |= (1 << 14); //bit 14 in I2C_OAR1 should always be kept as 1 by software
 
@@ -941,7 +942,7 @@ static void I2C_ClearAddrFlag(I2C_Handle_t *pI2CHandle)
 		{
 			if(pI2CHandle->RxLen == 1)
 			{
-				//first disable the  ACK
+				//first disable the ACK
 				I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
 
 				//clear the ADDR flag
@@ -986,4 +987,20 @@ void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
 
 		//disable the ACK
 		pI2Cx->CR1 &= ~(1 << I2C_CR1_ACK);
+}
+
+void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
+{
+	if(EnorDi == ENABLE)
+	{
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITEVTEN);
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+		pI2Cx->CR2 |= (1 << I2C_CR2_ITERREN);
+	}
+	else
+	{
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITEVTEN);
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITBUFEN);
+		pI2Cx->CR2 &= ~(1 << I2C_CR2_ITERREN);
+	}
 }
