@@ -77,7 +77,7 @@ void I2C1_Inits(void)
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_ENABLE;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress = MY_ADDR;
 	I2C1Handle.I2C_Config.I2C_SCLSpeed = I2C_SCL_SPEED_SM; //Standard mode
-	I2C1Handle.I2C_Config.I2C_FMDutyDycle = I2C_FM_DUTY_2; // can be ignored since we used I2C in standard mode
+	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2; // can be ignored since we used I2C in standard mode
 
 
 	I2C_Init(&I2C1Handle);

@@ -39,7 +39,7 @@ void delay(void)
 
 I2C_Handle_t I2C1Handle;
 
-//rcv buffer
+//Tx buffer
 uint8_t Tx_buffer[32] = "STM32 Slave mode testing...";
 
 
@@ -75,7 +75,7 @@ void I2C1_Inits(void)
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_ENABLE;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress = MY_ADDR;
 	I2C1Handle.I2C_Config.I2C_SCLSpeed = I2C_SCL_SPEED_SM; //Standard mode
-	I2C1Handle.I2C_Config.I2C_FMDutyDycle = I2C_FM_DUTY_2; // can be ignored since we used I2C in standard mode
+	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2; // can be ignored since we used I2C in standard mode
 
 
 	I2C_Init(&I2C1Handle);
@@ -145,22 +145,22 @@ void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEvt)
 		if(commandCode == 0x51)
 		{
 			//send the length information to the master
-			I2C_SlaveSendData(pI2CHandle->pI2Cx, strlen((char*)Tx_buffer));
+			I2C_SlaveSendData(I2C1, strlen((char*)Tx_buffer));
 		}
 		else if(commandCode == 0x52)
 		{
 			//send the content of the data (@Tx_buffer)
-			I2C_SlaveSendData(pI2CHandle->pI2Cx, Tx_buffer[cnt++]);
+			I2C_SlaveSendData(I2C1, Tx_buffer[cnt++]);
 		}
 	}
 	else if(AppEvt == I2C_EV_DATA_RCV)
 	{
 		//Data is waiting for the slave to read
-		commandCode = I2C_SlaveReceiveData(pI2CHandle->pI2Cx);
+		commandCode = I2C_SlaveReceiveData(I2C1);
 	}
 	else if(AppEvt == I2C_ERROR_AF)
 	{
-		//this happens only during slave transmission
+		//this happens only during slave transmission to master
 		//Master sends the NACK and slave understands that the master doesn't need more data.
 		commandCode = 0xff;
 		cnt = 0;

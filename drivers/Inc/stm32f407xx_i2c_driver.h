@@ -18,7 +18,7 @@ typedef struct
 	uint32_t I2C_SCLSpeed; //Clock speed
 	uint8_t  I2C_DeviceAddress; //Device address for Slave devices
 	uint8_t  I2C_ACKControl; //ACK or NACK to enable or disable
-	uint16_t I2C_FMDutyDycle; //Duty cycle
+	uint16_t I2C_FMDutyCycle; //Duty cycle
 }I2C_Config_t;
 
 //Handle structure of I2Cx peripheral

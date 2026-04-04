@@ -1,8 +1,0 @@
-../Src/013i2c_slave_tx_string.c:35:6:delay	2
-../Src/013i2c_slave_tx_string.c:51:6:I2C1_GPIOInits	1
-../Src/013i2c_slave_tx_string.c:72:6:I2C1_Inits	1
-../Src/013i2c_slave_tx_string.c:84:6:GPIO_ButtonInit	1
-../Src/013i2c_slave_tx_string.c:100:5:main	1
-../Src/013i2c_slave_tx_string.c:127:6:I2C1_EV_IRQHandler	1
-../Src/013i2c_slave_tx_string.c:132:6:I2C1_ER_IRQHandler	1
-../Src/013i2c_slave_tx_string.c:137:6:I2C_ApplicationEventCallback	6

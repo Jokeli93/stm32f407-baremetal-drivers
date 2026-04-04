@@ -182,9 +182,9 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 		//fast mode
 		tempReg |= (1 << I2C_CCR_FS); // first set the mode to fast mode
 
-		tempReg |= pI2CHandle->I2C_Config.I2C_FMDutyDycle << I2C_CCR_DUTY;
+		tempReg |= pI2CHandle->I2C_Config.I2C_FMDutyCycle << I2C_CCR_DUTY;
 
-		if(pI2CHandle->I2C_Config.I2C_FMDutyDycle == I2C_FM_DUTY_2)
+		if(pI2CHandle->I2C_Config.I2C_FMDutyCycle == I2C_FM_DUTY_2)
 		{
 			ccrValue = RCC_GetPCLK1Value() /(3 * pI2CHandle->I2C_Config.I2C_SCLSpeed);
 		}
