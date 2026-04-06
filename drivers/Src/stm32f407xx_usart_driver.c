@@ -108,7 +108,7 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 	if (pUSARTHandle->USART_Config.USART_Mode == USART_MODE_ONLY_RX)
 	{
 		//enable the Receiver bit field
-		temReg|= (1 << USART_CR1_RE);
+		temReg |= (1 << USART_CR1_RE);
 
 	}else if (pUSARTHandle->USART_Config.USART_Mode == USART_MODE_ONLY_TX)
 	{
@@ -230,6 +230,66 @@ void USART_DeInit(USART_RegDef_t *pUSARTx)
 	{
 		USART6_REG_RESET();
 	}
+}
+
+/*********************************************************************
+ * @fn      		  - USART_SendData
+ *
+ * @brief             - This function is used to send the data
+ *
+ * @param[in]         - USART handle structure
+ * @param[in]         - transmission buffer
+ * @param[in]         - data length to transmit
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t len)
+{
+
+	uint16_t *pdata;
+   //Loop over until "len" number of bytes are transferred
+	for(uint32_t i = 0 ; i < len; i++)
+	{
+		//wait until TXE flag is set in the SR
+		while(! USART_GetFlagStatus(pUSARTHandle->pUSARTx, USART_FLAG_TXE));
+
+         //Check the USART_WordLength item for 9BIT or 8BIT in a frame
+		if(pUSARTHandle->USART_Config.USART_WordLength == USART_WORDLEN_9BITS)
+		{
+			//if 9BIT, load the DR with 2bytes masking the bits other than first 9 bits
+			pdata = (uint16_t*)pTxBuffer;
+			pUSARTHandle->pUSARTx->DR = (*pdata & (uint16_t)0x01FF);
+
+			//check for USART_ParityControl
+			if(pUSARTHandle->USART_Config.USART_ParityControl == USART_PARITY_DISABLE)
+			{
+				//No parity is used in this transfer. so, 9bits of user data will be sent
+				//increment pTxBuffer twice
+				pTxBuffer++;
+				pTxBuffer++;
+			}
+			else
+			{
+				//Parity bit is used in this transfer . so , 8bits of user data will be sent
+				//The 9th bit will be replaced by parity bit by the hardware
+				pTxBuffer++;
+			}
+		}
+		else
+		{
+			//This is 8bit data transfer
+			pUSARTHandle->pUSARTx->DR = (*pTxBuffer  & (uint8_t)0xFF);
+
+			//increment the buffer address
+			pTxBuffer++;
+		}
+	}
+
+	//wait till TC flag is set in the SR
+	while( ! USART_GetFlagStatus(pUSARTHandle->pUSARTx,USART_FLAG_TC));
 }
 
 //IRQ configuration and ISR handling
