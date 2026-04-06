@@ -14,11 +14,11 @@ static void spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle);
 //Peripheral Clock setup
 
 /*******************************************************************************
-* @fn			- GPIO_PeriClockControl
+* @fn			- SPI_PeriClockControl
 *
 * @brief		- This function enables or disables peripheral clock for SPI
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none
@@ -91,7 +91,7 @@ void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 *
 * @brief		- This function initializes/sets the given SPI peripheral
 *
-*  @param[in]	- Structure to handle a GPIO pin
+*  @param[in]	- Structure to handle a SPI pin
 *
 * @return		- none
 *
@@ -156,7 +156,7 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 *
 * @brief		- This function resets the given SPI peripheral
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *
 * @return		- none
 *
@@ -196,7 +196,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 *
 * @brief		- This function is used to send the data
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- transmission register
 *  @param[in]	- lenght of the data
 *
@@ -237,7 +237,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
 *
 * @brief		- This function is used to receive the data
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- receive register
 *  @param[in]	- lenght of the data
 *
@@ -486,7 +486,7 @@ void SPI_IRQHandling(SPI_Handle_t *pSPIHandle)
 *
 * @brief		- This function enables or disables the SPI peripheral
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none
@@ -507,7 +507,7 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 *
 * @brief		- This function configures the SSI bit to avoid the Mode fault error (MODF)
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none
@@ -529,7 +529,7 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 *
 * @brief		- This function configures the SSOE bit to avoid the Mode fault error (MODF)
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the SPI peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none

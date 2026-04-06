@@ -81,11 +81,11 @@ uint32_t RCC_GetPCLK1Value(void)
 //Peripheral Clock setup
 
 /*******************************************************************************
-* @fn			- GPIO_PeriClockControl
+* @fn			- I2C_PeriClockControl
 *
 * @brief		- This function enables or disables peripheral clock for I2C
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the I2C peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none
@@ -221,7 +221,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 *
 * @brief		- This function resets the given I2C peripheral
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the I2C peripheral
 *
 * @return		- none
 *
@@ -885,7 +885,7 @@ uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2Cx)
 *
 * @brief		- This function enables or disables the I2C peripheral
 *
-*  @param[in]	- base address of the gpio peripheral
+*  @param[in]	- base address of the I2C peripheral
 *  @param[in]	- ENABLE or DISABLE macros
 *
 * @return		- none
