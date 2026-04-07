@@ -407,6 +407,14 @@ typedef struct
 #define IRQ_NO_I2C3_EV		72
 #define IRQ_NO_I2C3_ER		73
 
+//macros IRQ number of USART peripherals
+#define IRQ_NO_USART1		37
+#define IRQ_NO_USART2		38
+#define IRQ_NO_USART3		39
+#define IRQ_NO_UART4		52
+#define IRQ_NO_UART5		53
+#define IRQ_NO_USART6		71
+
 //macros IRQ priority levels of STM32F407x MCU
 
 #define NVIC_IRQ_PRI0		0

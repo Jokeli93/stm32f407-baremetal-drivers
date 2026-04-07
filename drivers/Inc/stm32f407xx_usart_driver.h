@@ -30,6 +30,12 @@ typedef struct
 {
 	USART_RegDef_t *pUSARTx;
 	USART_Config_t USART_Config;
+	uint8_t *pTxBuffer;
+	uint8_t *pRxBuffer;
+	uint32_t TxLen;
+	uint32_t RxLen;
+	uint8_t TxBusyState;
+	uint8_t RxBusyState;
 }USART_Handle_t;
 
 
@@ -37,9 +43,9 @@ typedef struct
  *@USART_Mode
  *Possible options for USART_Mode
  */
-#define USART_MODE_ONLY_TX 0
-#define USART_MODE_ONLY_RX 1
-#define USART_MODE_TXRX  2
+#define USART_MODE_ONLY_TX	0
+#define USART_MODE_ONLY_RX	1
+#define USART_MODE_TXRX  	2
 
 /*
  *@USART_Baud
@@ -104,6 +110,21 @@ typedef struct
 #define USART_FLAG_LBD		(1 << USART_SR_LBD)
 #define USART_FLAG_CTS		(1 << USART_SR_CTS)
 
+//USART application states
+#define USART_READY 		0
+#define USART_BUSY_IN_RX 	1
+#define USART_BUSY_IN_TX 	2
+
+//USART application events/errors macros
+#define 	USART_EVENT_TX_CMPLT	0
+#define		USART_EVENT_RX_CMPLT  	1
+#define		USART_EVENT_IDLE      	2
+#define		USART_EVENT_CTS       	3
+#define		USART_EVENT_PE        	4
+#define		USART_ERR_FE     		5
+#define		USART_ERR_NF    	 	6
+#define		USART_ERR_ORE    		7
+
 /***********************************************************************************
  *								APIs supported by this driver
  *		 For more information about the APIs check the function definitions
@@ -129,7 +150,7 @@ void USART_DeInit(USART_RegDef_t *pUSARTx);
  * Data Send and Receive
  */
 void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t len);
-void USART_ReceiveData(USART_RegDef_t *pUSARTx, uint8_t *pRxBuffer, uint32_t len);
+void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t len);
 uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32_t len);
 uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t len);
 

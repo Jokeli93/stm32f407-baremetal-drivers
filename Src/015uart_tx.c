@@ -34,6 +34,7 @@ void USART2_Init(void)
 	usart2_handle.USART_Config.USART_NoOfStopBits = USART_STOPBITS_1;
 	usart2_handle.USART_Config.USART_WordLength = USART_WORDLEN_8BITS;
 	usart2_handle.USART_Config.USART_ParityControl = USART_PARITY_DISABLE;
+
 	USART_Init(&usart2_handle);
 }
 
@@ -61,7 +62,7 @@ void USART2_GPIOInit(void)
 
 void GPIO_ButtonInit(void)
 {
-	GPIO_Handle_t GPIOBtn,GpioLed;
+	GPIO_Handle_t GPIOBtn, GpioLed;
 
 	//this is btn gpio configuration
 	GPIOBtn.pGPIOx = GPIOA;

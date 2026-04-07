@@ -23,31 +23,31 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   9 .ccmram       00000000  10000000  10000000  00002420  2**0
                   CONTENTS
- 10 .bss          0000002c  20000420  20000420  00002420  2**2
+ 10 .bss          00000040  20000420  20000420  00002420  2**2
                   ALLOC
- 11 ._user_heap_stack 00000604  2000044c  2000044c  00002420  2**0
+ 11 ._user_heap_stack 00000600  20000460  20000460  00002420  2**0
                   ALLOC
  12 .ARM.attributes 0000002a  00000000  00000000  00002420  2**0
                   CONTENTS, READONLY
- 13 .debug_info   0000155f  00000000  00000000  0000244a  2**0
+ 13 .debug_info   000017a3  00000000  00000000  0000244a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 000005eb  00000000  00000000  000039a9  2**0
+ 14 .debug_abbrev 000005f1  00000000  00000000  00003bed  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000170  00000000  00000000  00003f98  2**3
+ 15 .debug_aranges 00000198  00000000  00000000  000041e0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 00000107  00000000  00000000  00004108  2**0
+ 16 .debug_rnglists 00000127  00000000  00000000  00004378  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00002ca7  00000000  00000000  0000420f  2**0
+ 17 .debug_macro  00002d55  00000000  00000000  0000449f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   000022f8  00000000  00000000  00006eb6  2**0
+ 18 .debug_line   00002675  00000000  00000000  000071f4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    0000b293  00000000  00000000  000091ae  2**0
+ 19 .debug_str    0000b478  00000000  00000000  00009869  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  00014441  2**0
+ 20 .comment      00000043  00000000  00000000  00014ce1  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  0000048c  00000000  00000000  00014484  2**2
+ 21 .debug_frame  00000544  00000000  00000000  00014d24  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 000000c9  00000000  00000000  00014910  2**0
+ 22 .debug_line_str 000000c9  00000000  00000000  00015268  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -126,6 +126,7 @@ void USART2_Init(void)
  8000202:	4b04      	ldr	r3, [pc, #16]	@ (8000214 <USART2_Init+0x3c>)
  8000204:	2200      	movs	r2, #0
  8000206:	739a      	strb	r2, [r3, #14]
+
 	USART_Init(&usart2_handle);
  8000208:	4802      	ldr	r0, [pc, #8]	@ (8000214 <USART2_Init+0x3c>)
  800020a:	f000 fd25 	bl	8000c58 <USART_Init>
@@ -198,7 +199,7 @@ void GPIO_ButtonInit(void)
  8000260:	b580      	push	{r7, lr}
  8000262:	b086      	sub	sp, #24
  8000264:	af00      	add	r7, sp, #0
-	GPIO_Handle_t GPIOBtn,GpioLed;
+	GPIO_Handle_t GPIOBtn, GpioLed;
 
 	//this is btn gpio configuration
 	GPIOBtn.pGPIOx = GPIOA;
@@ -438,7 +439,7 @@ LoopForever:
   ldr r2, =_sbss
  8000380:	20000420 	.word	0x20000420
   ldr r4, =_ebss
- 8000384:	2000044c 	.word	0x2000044c
+ 8000384:	20000460 	.word	0x20000460
 
 08000388 <ADC_IRQHandler>:
  * @retval : None
@@ -1699,7 +1700,7 @@ void USART_PeriClockControl(USART_RegDef_t *pUSARTx, uint8_t EnorDi)
  * @return            -
  *
  * @Note              -
- */
+ ********************************************************************/
 void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
 {
  8000b74:	b580      	push	{r7, lr}
@@ -1862,7 +1863,7 @@ void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate)
  *
  * @Note              -
 
- */
+ *********************************************************************************/
 void USART_Init(USART_Handle_t *pUSARTHandle)
 {
  8000c58:	b580      	push	{r7, lr}
@@ -2085,7 +2086,7 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
  *
  * @Note              -
 
- */
+ ********************************************************************/
 void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t len)
 {
  8000d5a:	b580      	push	{r7, lr}
@@ -2191,7 +2192,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t l
 	}
 
 	//wait till TC flag is set in the SR
-	while( ! USART_GetFlagStatus(pUSARTHandle->pUSARTx,USART_FLAG_TC));
+	while(! USART_GetFlagStatus(pUSARTHandle->pUSARTx,USART_FLAG_TC));
  8000dd8:	bf00      	nop
  8000dda:	68fb      	ldr	r3, [r7, #12]
  8000ddc:	681b      	ldr	r3, [r3, #0]
