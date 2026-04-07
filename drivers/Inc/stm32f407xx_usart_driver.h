@@ -114,6 +114,11 @@ typedef struct
 void USART_PeriClockControl(USART_RegDef_t *pUSARTx, uint8_t EnorDi);
 
 /*
+ * Baudrate setup
+ */
+void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate);
+
+/*
  * Init and De-init
  */
 void USART_Init(USART_Handle_t *pUSARTHandle);

@@ -6,10 +6,7 @@
  */
 
 #include "stm32f407xx_I2C_driver.h"
-
-uint16_t AHB_Prescaler[8] = {2, 4, 8, 16, 64, 128, 256, 512};
-
-uint16_t APB1_Prescaler[8] = {2, 4, 8, 16};
+#include "stm32f407xx_rcc_driver.h"
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx); //helper function
 static void I2C_ExecuteAddressPhaseWrite(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr);
@@ -18,65 +15,8 @@ static void I2C_ClearAddrFlag(I2C_Handle_t *pI2CHandle);
 void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 static void I2C_MasterHandleTXEInterrupt(I2C_Handle_t *pI2CHandle);
 static void I2C_MasterHandleRXNEInterrupt(I2C_Handle_t *pI2CHandle);
+uint32_t RCC_GetPCLK1Value(void);
 
-uint32_t RCC_GetPLLOutputClock(void)
-{
-	//to implement if needed
-	return 0;
-}
-
-uint32_t RCC_GetPCLK1Value(void)
-{
-	uint32_t pclk1, systemClk;
-	uint8_t clkSrc, temp, ahbp, apb1p;
-
-	clkSrc = ((RCC->CFGR >> 2) & 0x3);
-
-	if(clkSrc == 0)
-	{
-		//HSI used as the system clock (16MHz)
-		systemClk = 16000000;
-
-	}
-	else if(clkSrc == 1)
-	{
-		//HSE used as the system clock (8MHz)
-		systemClk = 8000000;
-	}
-	else if(clkSrc == 2)
-	{
-		//PLL used as the system clock
-		systemClk = RCC_GetPLLOutputClock();
-	}
-
-	//Bits 7:4 (HPRE) to configure the AHB prescaler
-	temp = ((RCC->CFGR >> 4) & 0xF);
-
-	if(temp < 8)
-	{
-		ahbp = 1;
-	}
-	else
-	{
-		ahbp = AHB_Prescaler[temp - 8];
-	}
-
-	//Bits 12:10 (PPRE1) to configure the APB1 prescaler
-	temp = ((RCC->CFGR >> 10) & 0x7);
-
-	if(temp < 4)
-	{
-		apb1p = 1;
-	}
-	else
-	{
-		apb1p = APB1_Prescaler[temp - 4];
-	}
-
-	pclk1 = (systemClk / ahbp) / apb1p;
-
-	return pclk1;
-}
 
 //Peripheral Clock setup
 
