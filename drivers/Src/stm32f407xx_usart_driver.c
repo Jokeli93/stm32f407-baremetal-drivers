@@ -493,7 +493,7 @@ uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32
  * @Note              -
 
  ********************************************************************/
-uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pRxBuffer, uint32_t len)
+uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_t len)
 {
 	uint8_t rxstate = pUSARTHandle->RxBusyState;
 

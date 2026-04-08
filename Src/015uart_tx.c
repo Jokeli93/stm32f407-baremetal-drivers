@@ -14,6 +14,9 @@
  *
  * Baudrate: 115200 bps
  * Frame format: 1 stop bit, 8 bits frame, no parity
+ *
+ * For the Arduino board use the sketch "test\Arduino\USART\001UARTRxString\001UARTRxString.ino"
+ * located in this repository
  */
 
 
